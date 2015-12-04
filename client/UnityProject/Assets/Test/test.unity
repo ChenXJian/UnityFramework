@@ -340,11 +340,6 @@ MonoBehaviour:
     - time: 0
       value: 0
       inSlope: 0
-      outSlope: 80
-      tangentMode: 0
-    - time: 0
-      value: 0
-      inSlope: 0
       outSlope: 0
       tangentMode: 0
     - time: 1
@@ -352,8 +347,13 @@ MonoBehaviour:
       inSlope: 0
       outSlope: 0
       tangentMode: 0
+    - time: 8
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
     m_PreInfinity: 2
-    m_PostInfinity: 0
+    m_PostInfinity: 2
   go: {fileID: 976283761}
   point0: {x: 0, y: 0, z: 0}
   point1: {x: 20, y: 0, z: 0}

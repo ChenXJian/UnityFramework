@@ -30,7 +30,7 @@ public static class AppConst
     /// <summary>
     /// 研发模式-用于内部开发,   资源文件会走流文件目录
     /// </summary>
-    public static bool IsDebugMode = false;
+    public static bool IsDebugMode = true;
 
     /// <summary>
     /// 更新模式
@@ -42,7 +42,7 @@ public static class AppConst
     /// </summary>
     public static string AssetDirName = "StreamingAssets";
 
-    public static string BundleExtName = ".unity3d";
+    public static string BundleExtName = "unity3d";
 
     /// <summary>
     /// 约定分辨率

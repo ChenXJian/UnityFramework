@@ -1,5 +1,5 @@
 ManifestFileVersion: 0
-CRC: 1191822875
+CRC: 1301741268
 Hashes:
   AssetFileHash:
     serializedVersion: 2
@@ -36,6 +36,6 @@ ClassTypes:
 - Class: 224
   Script: {instanceID: 0}
 Assets:
-- Assets/OriginalRes/UI/SamplePanel/SamplePanel.prefab
+- Assets/RawResources/UI/SamplePanel/SamplePanel.prefab
 Dependencies:
-- D:/Milu/client/UnityProject/Assets/StreamingAssets/Windows_Assetbundles/ui/common.unity3d
+- D:/EasyUnityFramework/client/UnityProject/Assets/StreamingAssets/Windows_Assetbundles/ui/common.unity3d

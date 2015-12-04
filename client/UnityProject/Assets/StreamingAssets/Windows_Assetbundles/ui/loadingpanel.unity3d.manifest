@@ -1,5 +1,5 @@
 ManifestFileVersion: 0
-CRC: 1012987973
+CRC: 1791524615
 Hashes:
   AssetFileHash:
     serializedVersion: 2
@@ -38,6 +38,6 @@ ClassTypes:
 - Class: 224
   Script: {instanceID: 0}
 Assets:
-- Assets/OriginalRes/UI/LoadingPanel/LoadingPanel.prefab
+- Assets/RawResources/UI/LoadingPanel/LoadingPanel.prefab
 Dependencies:
-- D:/Milu/client/UnityProject/Assets/StreamingAssets/Windows_Assetbundles/ui/common.unity3d
+- D:/EasyUnityFramework/client/UnityProject/Assets/StreamingAssets/Windows_Assetbundles/ui/common.unity3d

@@ -133,7 +133,9 @@ public class MathAssist
         return dest;
     }
 
-
+    /// <summary>
+    /// 弧度转角度
+    /// </summary>
     public static double RadianToDegree(double radian)
     {
         return radian * (180 / Math.PI);

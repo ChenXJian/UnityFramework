@@ -25,30 +25,29 @@ public class TweenTest : MonoBehaviour
             Debug.Log("tangentMode:" + curve.keys[i].tangentMode);
             Debug.Log(" ");
         }
+
+
 	}
 
-
-    
-    void Start()
+    void Awake()
     {
         Keyframe[] ks = new Keyframe[3];
         ks[0] = new Keyframe(0, 0);
-        ks[0].outTangent = 80;
+
         ks[1] = new Keyframe(1, 1);
         ks[1].inTangent = 0;
+        ks[1].outTangent = 0;
+        //ks[0].inTangent = 220;
+        ks[2] = new Keyframe(8, 0);
 
-      //ks[2] = new Keyframe(8, 0);
-      //ks[2].inTangent = 90;
-        
         curve = new AnimationCurve(ks);
-        curve.postWrapMode = WrapMode.PingPong;
-
-
+       // curve.postWrapMode = WrapMode.PingPong;
     }
 
     void Update()
     {
         transform.position = new Vector3(0, curve.Evaluate(Time.time), 0);
+        DrawArrow.ForDebug(transform.position, transform.forward);
     }
 
 
@@ -60,7 +59,7 @@ public class TweenTest : MonoBehaviour
         Vector3[] points = new Vector3[] { point0, point1, point2, point3, point4 };
         pointInterp = MathAssist.GeneralBezierEvaluate(points, Time.time);
         Gizmos.color = Color.red;
-        Gizmos.DrawLine(point0, pointInterp);
+       // Gizmos.DrawLine(point0, pointInterp);
         //var rGo = GameObject.Instantiate(go);
        // rGo.transform.localPosition = pointInterp;
         

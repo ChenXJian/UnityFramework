@@ -1,5 +1,5 @@
 ManifestFileVersion: 0
-CRC: 2707975768
+CRC: 1443624388
 Hashes:
   AssetFileHash:
     serializedVersion: 2
@@ -58,10 +58,10 @@ ClassTypes:
 - Class: 224
   Script: {instanceID: 0}
 Assets:
-- Assets/OriginalRes/UI/Widget/ListView.prefab
-- Assets/OriginalRes/UI/Widget/FlipListView.prefab
-- Assets/OriginalRes/UI/Widget/DialogBoxTemplate.prefab
-- Assets/OriginalRes/UI/Widget/Tabs.prefab
-- Assets/OriginalRes/UI/Widget/Progressbar.prefab
+- Assets/RawResources/UI/Widget/ListView.prefab
+- Assets/RawResources/UI/Widget/FlipListView.prefab
+- Assets/RawResources/UI/Widget/DialogBoxTemplate.prefab
+- Assets/RawResources/UI/Widget/Tabs.prefab
+- Assets/RawResources/UI/Widget/Progressbar.prefab
 Dependencies:
-- D:/Milu/client/UnityProject/Assets/StreamingAssets/Windows_Assetbundles/ui/common.unity3d
+- D:/EasyUnityFramework/client/UnityProject/Assets/StreamingAssets/Windows_Assetbundles/ui/common.unity3d
