@@ -41,7 +41,8 @@ public class PackageWindow : EditorWindow
 
         if (GUILayout.Button("Package", GUILayout.Width(100)))
         {
-            Package();
+            EditorApplication.delayCall += Package;
+            Close();
         }
 
         GUILayout.Space(10f);
@@ -119,6 +120,7 @@ public class PackageWindow : EditorWindow
 
         EditorUserBuildSettings.SwitchActiveBuildTarget(temp);
         SavePackageConfig();
+       // Close();
     }
 
     void SwitchTextureFormat()

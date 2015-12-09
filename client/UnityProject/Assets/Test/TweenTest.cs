@@ -37,11 +37,10 @@ public class TweenTest : MonoBehaviour
         ks[1] = new Keyframe(1, 1);
         ks[1].inTangent = 0;
         ks[1].outTangent = 0;
-        //ks[0].inTangent = 220;
-        ks[2] = new Keyframe(8, 0);
+        ks[2] = new Keyframe(2, 0);
 
         curve = new AnimationCurve(ks);
-       // curve.postWrapMode = WrapMode.PingPong;
+        curve.postWrapMode = WrapMode.PingPong;
     }
 
     void Update()
