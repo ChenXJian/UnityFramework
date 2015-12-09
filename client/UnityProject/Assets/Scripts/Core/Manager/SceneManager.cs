@@ -50,6 +50,7 @@ public class SceneManager : MonoBehaviour
         var rUrl = AppPlatform.GetSceneBundleDirUrl() + loadSceneName.ToLower() + ".unity3d";
         Debug.Log("[DownloadSceneBundle]:>" + rUrl);
 
+        Util.CallScriptFunction(rPanel.LogicObject, rPanel.LogicName, callSetTips, "Loading...");
         var download = new WWW(rUrl);
         yield return download;
 
