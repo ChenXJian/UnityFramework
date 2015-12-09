@@ -1,7 +1,7 @@
-# EasyUnityFramework
+# uEasyKit
 
 ## 简述
-EasyUnityFramework是基于Unity实现的一套简单的开源游戏架构
+uEasyKit是基于Unity3D 5.0版本实现的一套使用简单的开源游戏开发工具集
 
 * Unity版本 : 5.2.0f3  
 * UI : UGUI
@@ -12,7 +12,7 @@ EasyUnityFramework是基于Unity实现的一套简单的开源游戏架构
 
 ## 引用
 
-EasyUnityFramework或参考设计思路，或直接代码引用了以下开源项目，在此表示感谢与尊敬
+uEasyKit或参考设计思路，或直接代码引用了以下开源项目，在此表示感谢与尊敬
 
 * L#
 * SimpleFramework
@@ -24,14 +24,15 @@ EasyUnityFramework或参考设计思路，或直接代码引用了以下开源�
 ## 支持功能
 
 * C#脚本全平台热更新(L#)
-* TCP消息+HTTP请求
+* TCP消息+HTTP请求的封装
 * UGUI常用控件实现（ListView, Draggable, DialogBox, Progressbar, Tab）
-* 基于MVC的简洁UI架构实现
+* 基于MVC理念的简洁UI架构实现
 * Assetbundle打包与加载系统
-* 手势消息分发（Tap, Move, Drag, Swipe）
-* 简洁的行为树实现
-* 多平台管理
-* 可用于脚本代码与原生代码之间通信的消息机制
+* 丰富的扩展功能（摄像机，行为树...等等）
+* 通用模块的统一管理（手势消息分发，场景管理，网络...等等）
+* 常用函数的封装（数学计算，文件操作）
+* 不同模块间的简洁通信机制（也同样支持脚本代码与原生代码）
+* 调式工具集
 
 ## 使用说明
 
@@ -46,6 +47,11 @@ QQ: 648398613
 Email: 648398613@qq.com
 
 ## 版本记录
+V0.0.3_alpha[2015.12.09] 
+1. 从EasyUnityFramework更名为uEasyKit
+2. 修复打包时的编辑器BUG
+3. 增加了一些便于开发期调试的功能
+4. 增加了一些相机相关的功能
 
 V0.0.2_alpha[2015.12.04] 
 
