@@ -23,13 +23,12 @@ public class FOVKick
     {
         if (camera == null)
         {
-            throw new Exception("FOVKick camera is null, please supply the camera to the constructor");
+            Debug.LogError("FOVKick camera is null");
         }
 
         if (IncreaseCurve == null)
         {
-            throw new Exception(
-                "FOVKick Increase curve is null, please define the curve for the field of view kicks");
+            Debug.LogError("FOVKick Increase curve is null");
         }
     }
 

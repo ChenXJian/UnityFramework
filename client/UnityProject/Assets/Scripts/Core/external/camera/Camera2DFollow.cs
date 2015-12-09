@@ -1,36 +1,34 @@
 using System;
 using UnityEngine;
 
-namespace UnityStandardAssets._2D
+
+public class Camera2DFollow : MonoBehaviour
 {
-    public class Camera2DFollow : MonoBehaviour
+    public Transform target;
+    public float damping = 1;
+    public float lookAheadFactor = 3;
+
+    float distanceZ;
+    Vector3 targetPosLast;
+
+    void Start()
     {
-        public Transform target;
-        public float damping = 1;
-        public float lookAheadFactor = 3;
+        targetPosLast = target.position;
+        distanceZ = (transform.position - target.position).z;
+    }
 
-        float distanceZ;
-        Vector3 targetPosLast;
+    Vector3 vVelocity;
+    void LateUpdate()
+    {
+        float xMoveDelta = (target.position - targetPosLast).x;
 
-        void Start()
-        {
-            targetPosLast = target.position;
-            distanceZ = (transform.position - target.position).z;
-        }
+        var lookAheadPos = lookAheadFactor * Vector3.right * Mathf.Sign(xMoveDelta);
 
-        Vector3 vVelocity;
-        void LateUpdate()
-        {
-            float xMoveDelta = (target.position - targetPosLast).x;
+        Vector3 aheadTargetPos = target.position + (Vector3.forward * distanceZ) + lookAheadPos;
+        Vector3 newPos = Vector3.SmoothDamp(transform.position, aheadTargetPos, ref vVelocity, damping);
 
-            var lookAheadPos = lookAheadFactor * Vector3.right * Mathf.Sign(xMoveDelta);
+        transform.position = newPos;
 
-            Vector3 aheadTargetPos = target.position + (Vector3.forward * distanceZ) + lookAheadPos;
-            Vector3 newPos = Vector3.SmoothDamp(transform.position, aheadTargetPos, ref vVelocity, damping);
-
-            transform.position = newPos;
-
-            targetPosLast = target.position;
-        }
+        targetPosLast = target.position;
     }
 }
