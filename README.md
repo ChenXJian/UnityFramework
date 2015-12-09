@@ -48,6 +48,7 @@ Email: 648398613@qq.com
 
 ## 版本记录
 V0.0.3_alpha[2015.12.09] 
+
 1. 从EasyUnityFramework更名为uEasyKit
 2. 修复打包时的编辑器BUG
 3. 增加了一些便于开发期调试的功能
