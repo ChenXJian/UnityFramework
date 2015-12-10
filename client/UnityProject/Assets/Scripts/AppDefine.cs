@@ -5,6 +5,9 @@
 /// </summary>
 public static class AppConst
 {
+    /// <summary>
+    /// Http服务器
+    /// </summary>
     public static string HttpServerHost = "http://000.000.0.000:0000/";
 
     /// <summary>
@@ -99,5 +102,11 @@ public class SceneName
 public class NoticeName
 {
     public const string Test = "General_Test";
+}
+
+public enum LocalizationType
+{
+    en_US,
+    zh_CN,
 }
 

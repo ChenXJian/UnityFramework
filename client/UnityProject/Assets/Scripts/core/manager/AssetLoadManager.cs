@@ -19,13 +19,6 @@ public class AssetLoadManager : MonoBehaviour
 {
 
     #region 调用接口
-    /// <summary>
-    /// 调用接口 [Manifest]
-    /// </summary>
-    public void LoadManifest(string manifestName, Action func)
-    {
-        this.StartCoroutine(OnLoadManifest(manifestName, func));
-    }
 
     /// <summary>
     /// 调用接口 [GUI]
@@ -40,48 +33,15 @@ public class AssetLoadManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 调用角色 [Character]
+    /// 调用接口 [Localization]
     /// </summary>
-    public void LoadCharacter(string rCharaName, Action<GameObject> func)
+    public void LoadLocalizationFile(string assetname, Action<TextAsset> func)
     {
-        this.LoadAsset<GameObject>(string.Format("Character/{0}", rCharaName), string.Format("Chara_{0}", rCharaName), func);
+        this.LoadAsset<TextAsset>("localization", assetname, func);
     }
-    public void UnloadCharacter(string rCharaName)
+    public void UnoadLocalizationFile(string assetname)
     {
-        if (!rCharaName.StartsWith("Chara_"))
-        {
-            return;
-        }
-
-        if (rCharaName.Contains("_"))
-        {
-            rCharaName = rCharaName.Split('_')[1];
-        }
-        UnloadAssetBundle("Character/" + rCharaName.ToLower() + AppConst.BundleExtName);
-    }
-
-    /// <summary>
-    /// 调用角色特效 [CharacterEffect] //TODO
-    /// </summary>
-    public void LoadCharacterEffect(string rCharaName, string rEffectName, Action<GameObject> func)
-    {
-        this.LoadAsset<GameObject>("Character/" + rCharaName, rEffectName, func);
-    }
-    public void UnloadCharacterEffect(string rCharaName)
-    {
-        UnloadAssetBundle("Character/" + rCharaName.ToLower() + AppConst.BundleExtName);
-    }
-
-    /// <summary>
-    /// 调用接口 [Scene]
-    /// </summary>
-    public void LoadScene(string assetname, Action<UnityEngine.Object> func)
-    {
-        this.LoadAsset<UnityEngine.Object>("scene/" + assetname, assetname, func);
-    }
-    public void UnoadScene(string assetname)
-    {
-        UnloadAssetBundle("scene/" + assetname.ToLower() + AppConst.BundleExtName);
+        UnloadAssetBundle("localization" + AppConst.BundleExtName);
     }
     #endregion 
 
@@ -115,6 +75,14 @@ public class AssetLoadManager : MonoBehaviour
     }
 
     public void Initialize() { }
+
+    /// <summary>
+    /// 调用接口 [Manifest]
+    /// </summary>
+    public void LoadManifest(string manifestName, Action func)
+    {
+        this.StartCoroutine(OnLoadManifest(manifestName, func));
+    }
 
     /// <summary>
     /// 调用接口 [泛型]

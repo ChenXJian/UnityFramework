@@ -82,9 +82,10 @@ public class GameController : MonoBehaviour
     /// </summary>
     void GameStart()
     {
+        Localization.Initialize(LocalizationType.zh_CN);
 
-        _scriptMainUpdate = Util.CreateScriptObject("MainUpdate");
         //启动脚本系统
+        _scriptMainUpdate = Util.CreateScriptObject("MainUpdate");
         Util.CallScriptFunction(_scriptMainUpdate, "MainUpdate", "Init");
         //inited = true;
     }

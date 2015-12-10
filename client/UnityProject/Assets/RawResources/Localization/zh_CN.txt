@@ -1,0 +1,10 @@
+GameName = uEasyKit
+GameDescription = 基于Unity的开发工具集
+Language = English (US)
+LanguageShortName = zh_CN
+FilePath = Sprites/
+
+
+// Test
+Test = 测试本地化
+LoadingText = 载入中...

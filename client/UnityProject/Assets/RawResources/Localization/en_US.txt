@@ -1,0 +1,10 @@
+GameName = uEasyKit
+GameDescription = Dev kit base on Unity
+Language = English (US)
+LanguageShortName = en-US
+FilePath = Sprites/
+
+
+// Test
+Test = This is a Test, Who care?
+LoadingText = LOADING...
