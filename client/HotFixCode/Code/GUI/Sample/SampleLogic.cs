@@ -179,10 +179,6 @@ namespace HotFixCode
             {
                 Debug.Log("进入到场景" + SceneName.Test);
                 gate.PanelManager.PushPanel(LogicName.SampleTwo);
-            },
-            () =>
-            {
-                Debug.Log("asdas");
             });
         }
 
