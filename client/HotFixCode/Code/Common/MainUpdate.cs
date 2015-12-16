@@ -21,7 +21,7 @@ namespace HotFixCode
             var userModel = gate.ModelManager.GetModel<UserModel>();
             userModel.UserName = "Test";
             userModel.Gold = 42;
-            gate.PanelManager.PushPanel(LogicName.Sample);	
+            gate.PanelManager.PushPanel(LogicName.Sample);
         }
 
         void End()

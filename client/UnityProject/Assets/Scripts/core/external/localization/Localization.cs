@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 using System.Collections;
+using System;
 
 public static class Localization 
 {
@@ -122,7 +123,7 @@ public static class Localization
     {
         if (asset == null)
         {
-            Debug.LogError("未获取到LocalizationFile");
+            throw new NullReferenceException("Not find LocalizationFile");
         }
 
         dictionary.Clear();

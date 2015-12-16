@@ -11,6 +11,10 @@ public class MusicManager : MonoBehaviour
     public void Initialize()
     {
         this.audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+        }
     }
 
     /// <summary>

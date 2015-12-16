@@ -102,7 +102,6 @@ public class Progressbar : MonoBehaviour
         protected set;
     }
 
-
     public void Play(int? targetValue = null)
     {
         if (currentAnimation != null)

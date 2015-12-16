@@ -8,153 +8,6 @@ using System.Text;
 
 public class DebugConsole : MonoBehaviour
 {
-    struct Message
-    {
-        string text;
-        string formatted;
-        MessageType type;
-        public Color color { get; private set; }
-
-        public static Color defaultColor = Color.white;
-        public static Color warningColor = Color.yellow;
-        public static Color errorColor = Color.red;
-        public static Color systemColor = Color.green;
-        public static Color inputColor = Color.green;
-        public static Color outputColor = Color.cyan;
-
-        public Message(object messageObject)
-            : this(messageObject, MessageType.NORMAL, Message.defaultColor)
-        {
-        }
-
-        public Message(object messageObject, Color displayColor)
-            : this(messageObject, MessageType.NORMAL, displayColor)
-        {
-        }
-
-        public Message(object messageObject, MessageType messageType)
-            : this(messageObject, messageType, Message.defaultColor)
-        {
-            switch (messageType)
-            {
-                case MessageType.ERROR:
-                    color = errorColor;
-                    break;
-                case MessageType.SYSTEM:
-                    color = systemColor;
-                    break;
-                case MessageType.WARNING:
-                    color = warningColor;
-                    break;
-                case MessageType.OUTPUT:
-                    color = outputColor;
-                    break;
-                case MessageType.INPUT:
-                    color = inputColor;
-                    break;
-            }
-        }
-
-        public Message(object messageObject, MessageType messageType, Color displayColor)
-            : this()
-        {
-            if (messageObject == null)
-                this.text = "<null>";
-            else
-                this.text = messageObject.ToString();
-
-            this.formatted = string.Empty;
-            this.type = messageType;
-            this.color = displayColor;
-
-
-        }
-
-        public static Message Log(object message)
-        {
-            Debug.Log(message);
-            return new Message(message, MessageType.NORMAL, defaultColor);
-        }
-
-        public static Message System(object message)
-        {
-            Debug.Log(message);
-            return new Message(message, MessageType.SYSTEM, systemColor);
-        }
-
-        public static Message Warning(object message)
-        {
-            Debug.LogWarning(message);
-            return new Message(message, MessageType.WARNING, warningColor);
-        }
-
-        public static Message Error(object message)
-        {
-            Debug.LogError(message);
-            return new Message(message, MessageType.ERROR, errorColor);
-        }
-
-        public static Message Output(object message)
-        {
-            return new Message(message, MessageType.OUTPUT, outputColor);
-        }
-
-        public static Message Input(object message)
-        {
-            return new Message(message, MessageType.INPUT, inputColor);
-        }
-
-        public override string ToString()
-        {
-            switch (type)
-            {
-                case MessageType.ERROR:
-                    return string.Format("[{0}] {1}", type, text);
-                case MessageType.WARNING:
-                    return string.Format("[{0}] {1}", type, text);
-                default:
-                    return ToGUIString();
-            }
-        }
-
-        public string ToGUIString()
-        {
-            if (!string.IsNullOrEmpty(formatted))
-                return formatted;
-
-            switch (type)
-            {
-                case MessageType.INPUT:
-                    formatted = ">>> " + text;
-                    break;
-                case MessageType.OUTPUT:
-                    var lines = text.Trim('\n').Split('\n');
-                    var output = new StringBuilder();
-
-                    foreach (var line in lines)
-                    {
-                        output.AppendLine("= " + line);
-                    }
-
-                    formatted = output.ToString();
-                    break;
-                case MessageType.SYSTEM:
-                    formatted = "# " + text;
-                    break;
-                case MessageType.WARNING:
-                    formatted = "* " + text;
-                    break;
-                case MessageType.ERROR:
-                    formatted = "** " + text;
-                    break;
-                default:
-                    formatted = text;
-                    break;
-            }
-
-            return formatted;
-        }
-    }
 
     private static DebugConsole __instance;
     public static DebugConsole Instance { get { return __instance; } }
@@ -165,6 +18,7 @@ public class DebugConsole : MonoBehaviour
         {
             __instance = this;
         }
+        DontDestroyOnLoad(DebugConsole.Instance);
     }
 
     public delegate object DebugCommand(params string[] args);
@@ -177,7 +31,6 @@ public class DebugConsole : MonoBehaviour
     public Color inputColor = Message.inputColor;
     public Color outputColor = Message.outputColor;
     public static KeyCode toggleKey = KeyCode.Tab;
-    public bool IsDebug = true;
 
     Dict<string, DebugCommand> _cmdTable = new Dict<string, DebugCommand>();
     Dict<string, string> _cmdTableDiscribes = new Dict<string, string>(); //cmd的注释
@@ -214,6 +67,8 @@ public class DebugConsole : MonoBehaviour
     GUIStyle labelStyle;
     #endregion
 
+    public bool IsDebugMode { set; get; }
+
     public enum MessageType
     {
         NORMAL,
@@ -248,6 +103,11 @@ public class DebugConsole : MonoBehaviour
 
     void OnGUI()
     {
+        if (!IsDebugMode)
+        {
+            return;
+        }
+
         while (_messages.Count > maxLinesForDisplay)
         {
             _messages.RemoveAt(0);
@@ -258,7 +118,7 @@ public class DebugConsole : MonoBehaviour
             isOpenLogView = !isOpenLogView;
         }
 
-        if (Input.touchCount == 2)
+        if (Input.touchCount == 4)
         {
             isOpenLogView = true;
         }
@@ -287,41 +147,36 @@ public class DebugConsole : MonoBehaviour
 
     #region StaticAccessors
 
-    public static object Log(object message)
+    public static void Log(object message)
     {
-        if (!DebugConsole.Instance.IsDebug)
-            return null;
-
-        DebugConsole.Instance.LogMessage(Message.Log(message));
-
-        return message;
+        if (DebugConsole.Instance.IsDebugMode)
+        {
+            DebugConsole.Instance.LogMessage(Message.Log(message));
+        }
     }
 
-    public static object Log(object message, MessageType messageType)
+    public static void Log(object message, MessageType messageType)
     {
-        if (!DebugConsole.Instance.IsDebug)
-            return null;
-        DebugConsole.Instance.LogMessage(new Message(message, messageType));
-
-        return message;
+        if (DebugConsole.Instance.IsDebugMode)
+        {
+            DebugConsole.Instance.LogMessage(new Message(message, messageType));
+        }
     }
 
-    public static object LogWarning(object message)
+    public static void LogWarning(object message)
     {
-        if (!DebugConsole.Instance.IsDebug)
-            return null;
-        DebugConsole.Instance.LogMessage(Message.Warning(message));
-
-        return message;
+        if (DebugConsole.Instance.IsDebugMode)
+        {
+            DebugConsole.Instance.LogMessage(Message.Warning(message));
+        }
     }
 
-    public static object LogError(object message)
+    public static void LogError(object message)
     {
-        if (!DebugConsole.Instance.IsDebug)
-            return null;
-        DebugConsole.Instance.LogMessage(Message.Error(message));
-
-        return message;
+        if (DebugConsole.Instance.IsDebugMode)
+        {
+            DebugConsole.Instance.LogMessage(Message.Error(message));
+        }
     }
 
     public static void Clear()
@@ -577,4 +432,155 @@ public class DebugConsole : MonoBehaviour
     }
 
     #endregion
+
+
+
+    struct Message
+    {
+        string text;
+        string formatted;
+        MessageType type;
+        public Color color { get; private set; }
+
+        public static Color defaultColor = Color.white;
+        public static Color warningColor = Color.yellow;
+        public static Color errorColor = Color.red;
+        public static Color systemColor = Color.green;
+        public static Color inputColor = Color.green;
+        public static Color outputColor = Color.cyan;
+
+        public Message(object messageObject)
+            : this(messageObject, MessageType.NORMAL, Message.defaultColor)
+        {
+        }
+
+        public Message(object messageObject, Color displayColor)
+            : this(messageObject, MessageType.NORMAL, displayColor)
+        {
+        }
+
+        public Message(object messageObject, MessageType messageType)
+            : this(messageObject, messageType, Message.defaultColor)
+        {
+            switch (messageType)
+            {
+                case MessageType.ERROR:
+                    color = errorColor;
+                    break;
+                case MessageType.SYSTEM:
+                    color = systemColor;
+                    break;
+                case MessageType.WARNING:
+                    color = warningColor;
+                    break;
+                case MessageType.OUTPUT:
+                    color = outputColor;
+                    break;
+                case MessageType.INPUT:
+                    color = inputColor;
+                    break;
+            }
+        }
+
+        public Message(object messageObject, MessageType messageType, Color displayColor)
+            : this()
+        {
+            if (messageObject == null)
+                this.text = "<null>";
+            else
+                this.text = messageObject.ToString();
+
+            this.formatted = string.Empty;
+            this.type = messageType;
+            this.color = displayColor;
+
+
+        }
+
+        public static Message Log(object message)
+        {
+            Debug.Log(message);
+            return new Message(message, MessageType.NORMAL, defaultColor);
+        }
+
+        public static Message System(object message)
+        {
+            Debug.Log(message);
+            return new Message(message, MessageType.SYSTEM, systemColor);
+        }
+
+        public static Message Warning(object message)
+        {
+            Debug.LogWarning(message);
+            return new Message(message, MessageType.WARNING, warningColor);
+        }
+
+        public static Message Error(object message)
+        {
+            Debug.LogError(message);
+            return new Message(message, MessageType.ERROR, errorColor);
+        }
+
+        public static Message Output(object message)
+        {
+            return new Message(message, MessageType.OUTPUT, outputColor);
+        }
+
+        public static Message Input(object message)
+        {
+            return new Message(message, MessageType.INPUT, inputColor);
+        }
+
+        public override string ToString()
+        {
+            switch (type)
+            {
+                case MessageType.ERROR:
+                    return string.Format("[{0}] {1}", type, text);
+                case MessageType.WARNING:
+                    return string.Format("[{0}] {1}", type, text);
+                default:
+                    return ToGUIString();
+            }
+        }
+
+        public string ToGUIString()
+        {
+            if (!string.IsNullOrEmpty(formatted))
+                return formatted;
+
+            switch (type)
+            {
+                case MessageType.INPUT:
+                    formatted = ">>> " + text;
+                    break;
+                case MessageType.OUTPUT:
+                    var lines = text.Trim('\n').Split('\n');
+                    var output = new StringBuilder();
+
+                    foreach (var line in lines)
+                    {
+                        output.AppendLine("= " + line);
+                    }
+
+                    formatted = output.ToString();
+                    break;
+                case MessageType.SYSTEM:
+                    formatted = "# " + text;
+                    break;
+                case MessageType.WARNING:
+                    formatted = "* " + text;
+                    break;
+                case MessageType.ERROR:
+                    formatted = "** " + text;
+                    break;
+                default:
+                    formatted = text;
+                    break;
+            }
+
+            return formatted;
+        }
+    }
+
 }

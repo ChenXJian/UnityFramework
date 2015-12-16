@@ -2,21 +2,23 @@
 using System.Collections.Generic;
 using System.Collections;
 using System;
+using UnityEngine.Events;
 
 /// Key - button name.
 /// Value - action on click.
-public class DialogActions : IDictionary<string, Func<bool>>
+/// new DialogActions(){ {}, {}, }
+public class DialogActions : IDictionary<string, UEasyFunc<bool>>
 {
     List<string> keys = new List<string>();
-    List<Func<bool>> values = new List<Func<bool>>();
-    List<KeyValuePair<string, Func<bool>>> elements = new List<KeyValuePair<string, Func<bool>>>();
+    List<UEasyFunc<bool>> values = new List<UEasyFunc<bool>>();
+    List<KeyValuePair<string, UEasyFunc<bool>>> elements = new List<KeyValuePair<string, UEasyFunc<bool>>>();
 
     public bool IsReadOnly
     {
         get { return false; }
     }
 
-    public IEnumerator<KeyValuePair<string, Func<bool>>> GetEnumerator()
+    public IEnumerator<KeyValuePair<string, UEasyFunc<bool>>> GetEnumerator()
     {
         return elements.GetEnumerator();
     }
@@ -31,7 +33,7 @@ public class DialogActions : IDictionary<string, Func<bool>>
         get { return elements.Count; }
     }
 
-    public Func<bool> this[string key]
+    public UEasyFunc<bool> this[string key]
     {
         get
         {
@@ -41,7 +43,7 @@ public class DialogActions : IDictionary<string, Func<bool>>
         set
         {
             var index = keys.IndexOf(key);
-            elements[index] = new KeyValuePair<string, Func<bool>>(key, value);
+            elements[index] = new KeyValuePair<string, UEasyFunc<bool>>(key, value);
         }
     }
 
@@ -59,7 +61,7 @@ public class DialogActions : IDictionary<string, Func<bool>>
     /// <summary>
     /// Get Values container
     /// </summary>
-    public ICollection<Func<bool>> Values
+    public ICollection<UEasyFunc<bool>> Values
     {
         get
         {
@@ -70,7 +72,7 @@ public class DialogActions : IDictionary<string, Func<bool>>
     /// <summary>
     /// Add  by Item 
     /// </summary>
-    public void Add(KeyValuePair<string, Func<bool>> item)
+    public void Add(KeyValuePair<string, UEasyFunc<bool>> item)
     {
         Add(item.Key, item.Value);
     }
@@ -78,19 +80,19 @@ public class DialogActions : IDictionary<string, Func<bool>>
     /// <summary>
     /// Add by key&value
     /// </summary>
-    public void Add(string key, Func<bool> value)
+    public void Add(string key, UEasyFunc<bool> value)
     {
         if (key == null)
         {
-            DebugConsole.LogError("Key is null.");
+            Debug.LogError("Key is null.");
         }
         if (ContainsKey(key))
         {
-            DebugConsole.LogError(string.Format("An element with the same key ({0}) already exists.", key));
+            Debug.LogError(string.Format("An element with the same key ({0}) already exists.", key));
         }
         keys.Add(key);
         values.Add(value);
-        elements.Add(new KeyValuePair<string, Func<bool>>(key, value));
+        elements.Add(new KeyValuePair<string, UEasyFunc<bool>>(key, value));
     }
 
     /// <summary>
@@ -106,7 +108,7 @@ public class DialogActions : IDictionary<string, Func<bool>>
     /// <summary>
     /// Is Contains by item
     /// </summary>
-    public bool Contains(KeyValuePair<string, Func<bool>> item)
+    public bool Contains(KeyValuePair<string, UEasyFunc<bool>> item)
     {
         return elements.Contains(item);
     }
@@ -118,7 +120,7 @@ public class DialogActions : IDictionary<string, Func<bool>>
     {
         if (key == null)
         {
-            DebugConsole.LogError("Key is null.");
+            Debug.LogError("Key is null.");
         }
 
         return keys.Contains(key);
@@ -127,7 +129,7 @@ public class DialogActions : IDictionary<string, Func<bool>>
     /// <summary>
     /// elements to Array with copy
     /// </summary>
-    public void CopyTo(KeyValuePair<string, Func<bool>>[] array, int arrayIndexStart)
+    public void CopyTo(KeyValuePair<string, UEasyFunc<bool>>[] array, int arrayIndexStart)
     {
         elements.CopyTo(array, arrayIndexStart);
     }
@@ -135,7 +137,7 @@ public class DialogActions : IDictionary<string, Func<bool>>
     /// <summary>
     /// remove by item
     /// </summary>
-    public bool Remove(KeyValuePair<string, Func<bool>> item)
+    public bool Remove(KeyValuePair<string, UEasyFunc<bool>> item)
     {
         if (!elements.Contains(item))
         {
@@ -156,7 +158,7 @@ public class DialogActions : IDictionary<string, Func<bool>>
     {
         if (key == null)
         {
-            DebugConsole.LogError("Key is null.");
+            Debug.LogError("Key is null.");
         }
 
         if (!ContainsKey(key))
@@ -174,16 +176,16 @@ public class DialogActions : IDictionary<string, Func<bool>>
     /// <summary>
     /// TryGet
     /// </summary>
-    public bool TryGetValue(string key, out Func<bool> value)
+    public bool TryGetValue(string key, out UEasyFunc<bool> value)
     {
         if (key == null)
         {
-            DebugConsole.LogError("Key is null.");
+            Debug.LogError("Key is null.");
         }
 
         if (!ContainsKey(key))
         {
-            value = default(Func<bool>);
+            value = default(UEasyFunc<bool>);
             return false;
         }
 

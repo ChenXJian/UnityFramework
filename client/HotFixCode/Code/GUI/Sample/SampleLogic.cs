@@ -157,7 +157,14 @@ namespace HotFixCode
 
         void TestDialogBox()
         {
-            DialogBox.Template(TemplateName.DialogBox).Show(title: "DialogBoxTest");
+            DialogBox.Template(TemplateName.DialogBox).Show(
+
+                buttons: new DialogActions()
+                {
+                    {"Test", () =>{ Debug.Log("Test"); return true; }},
+                    {"Cancel", DialogBox.Close},
+                }, 
+                title: "DialogBoxTest");
         }
 
         void TestTween()

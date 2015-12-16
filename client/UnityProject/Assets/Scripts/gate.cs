@@ -114,9 +114,14 @@ public static class gate
     {
         get
         {
-            GameObject go = GameObject.FindWithTag("GUIRoot");
-            if (go != null) return go;
-            return null;
+            GameObject rGo = GameObject.FindWithTag("GUIRoot");
+
+            if (rGo == null)
+            {
+                throw new NullReferenceException("Not find GUIRoot");
+            }
+
+            return rGo;
         }
     }
 
@@ -124,9 +129,14 @@ public static class gate
     {
         get
         {
-            GameObject go = GameObject.FindWithTag("PanelWindow");
-            if (go != null) return go.GetComponent<Transform>();
-            return null;
+            GameObject rGo = GameObject.FindWithTag("PanelWindow");
+
+            if (rGo == null)
+            {
+                throw new NullReferenceException("Not find GUIRoot");
+            }
+
+            return rGo.transform;
         }
     }
 
@@ -134,9 +144,13 @@ public static class gate
     {
         get
         {
-            GameObject go = GameObject.FindWithTag("EffectCamera");
-            if (go != null) return go.transform;
-            return null;
+            GameObject rGo = GameObject.FindWithTag("EffectCamera");
+            if (rGo == null)
+            {
+                throw new NullReferenceException("Not find EffectCamera");
+            }
+
+            return rGo.transform;
         }
     }
 
@@ -144,9 +158,13 @@ public static class gate
     {
         get
         {
-            GameObject go = GameObject.FindWithTag("MessageCanvas");
-            if (go != null) return go.transform;
-            return null;
+            GameObject rGo = GameObject.FindWithTag("MessageCanvas");
+            if (rGo == null)
+            {
+                throw new NullReferenceException("Not find MessageCanvas");
+            }
+
+            return rGo.transform;
         }
     }
 
@@ -154,9 +172,13 @@ public static class gate
     {
         get
         {
-            GameObject go = GameObject.FindWithTag("PopupsWindow");
-            if (go != null) return go.transform;
-            return null;
+            GameObject rGo = GameObject.FindWithTag("PopupsWindow");
+            if (rGo == null)
+            {
+                throw new NullReferenceException("Not find PopupsWindow");
+            }
+
+            return rGo.transform;
         }
     }
 
@@ -164,9 +186,14 @@ public static class gate
     {
         get
         {
-            GameObject go = GameObject.FindWithTag("HttpRequestPool");
-            if (go != null) return go.transform;
-            return null;
+            var rName = "HttpRequestPool";
+            GameObject rGo = GameObject.FindWithTag(rName);
+            if (rGo == null)
+            {
+                rGo = new GameObject(rName);
+                rGo.tag = rName;
+            }
+            return rGo.transform;
         }
     }
 
@@ -174,9 +201,13 @@ public static class gate
     {
         get
         {
-            GameObject go = GameObject.FindWithTag("Templates");
-            if (go != null) return go.transform;
-            return null;
+            GameObject rGo = GameObject.FindWithTag("Templates");
+            if (rGo == null)
+            {
+                throw new NullReferenceException("Not find Templates");
+            }
+
+            return rGo.transform;
         }
     }
 
@@ -184,9 +215,13 @@ public static class gate
     {
         get
         {
-            GameObject go = GameObject.FindWithTag("MainUpdate");
-            if (go != null) return go.transform;
-            return null;
+            GameObject rGo = GameObject.FindWithTag("MainUpdate");
+            if (rGo == null)
+            {
+                throw new NullReferenceException("Not find MainUpdate");
+            }
+
+            return rGo.transform;
         }
     }
 }

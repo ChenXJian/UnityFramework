@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 public abstract class ListViewItemDesc { }
 
 [RequireComponent(typeof(Image))]
-public abstract class BaseListViewItem : MonoBehaviour
+public class BaseListViewItem : MonoBehaviour
 {
     /// <summary>
     /// 点击事件监听者
@@ -31,7 +31,7 @@ public abstract class BaseListViewItem : MonoBehaviour
     /// <summary>
     /// 子类需要实现SetData方法
     /// </summary>
-    public abstract void SetData(ListViewItemDesc item);
+    public virtual void SetData(ListViewItemDesc item) { }
 
     public void Awake()
     {

@@ -6,7 +6,7 @@ public class ListViewCustom<TItem, TDesc> : BaseListView
     where TItem : BaseListViewItem
     where TDesc : ListViewItemDesc
 {
-    public TItem customItem;
+    public BaseListViewItem customItem;
     public List<TDesc> configItems = new List<TDesc>();
 
 	protected virtual void Start () 

@@ -2,7 +2,7 @@
 using System.Collections;
 using System;
 
-public class HttpRequestManager : MonoBehaviour 
+public class HttpRequestManager : MonoBehaviour
 {
     public HttpRequestSignin Login(string account, string password, string serverID)
     {

@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 1443624388
+CRC: 398507273
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 22d8741595e137fc401e338ebdfab78d
+    Hash: 9cbb49081f59de3bff8f532272f9bb8c
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 3e47a2cfa7852dfe44d23aa4ceed01bf
+    Hash: 75e33a21156341ae62525213e78a19db
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -34,8 +34,6 @@ ClassTypes:
 - Class: 114
   Script: {fileID: 1367256648, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
 - Class: 114
-  Script: {fileID: 1573420865, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
-- Class: 114
   Script: {fileID: 708705254, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
 - Class: 114
   Script: {fileID: 1297475563, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
@@ -46,7 +44,11 @@ ClassTypes:
 - Class: 114
   Script: {fileID: 11500000, guid: 110cbd49ff67544a3b8efed25bd4e43e, type: 3}
 - Class: 114
+  Script: {fileID: 11500000, guid: b30ba3bb0caab416591a0dc26da9f71c, type: 3}
+- Class: 114
   Script: {fileID: 11500000, guid: dfba95fb8854d49f9b73d14b222ff464, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 951049fc447b9441aa50aa387f0127c3, type: 3}
 - Class: 115
   Script: {instanceID: 0}
 - Class: 128
@@ -60,8 +62,9 @@ ClassTypes:
 Assets:
 - Assets/RawResources/UI/Widget/ListView.prefab
 - Assets/RawResources/UI/Widget/FlipListView.prefab
+- Assets/RawResources/UI/Widget/Progressbar.prefab
 - Assets/RawResources/UI/Widget/DialogBoxTemplate.prefab
 - Assets/RawResources/UI/Widget/Tabs.prefab
-- Assets/RawResources/UI/Widget/Progressbar.prefab
+- Assets/RawResources/UI/Widget/WaitingTemplate.prefab
 Dependencies:
-- D:/EasyUnityFramework/client/UnityProject/Assets/StreamingAssets/Windows_Assetbundles/ui/common.unity3d
+- D:/uEasyKit/client/UnityProject/Assets/StreamingAssets/Windows_Assetbundles/ui/common.unity3d

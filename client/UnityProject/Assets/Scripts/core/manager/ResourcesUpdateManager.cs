@@ -30,10 +30,9 @@ public class ResourcesUpdateManager : MonoBehaviour
     void CheckExtractResource()
     {
         bool rNoExtract = Directory.Exists(AppPlatform.RuntimeAssetsPath) && File.Exists(AppPlatform.RuntimeAssetsPath + "files.txt");
-        if (rNoExtract || AppConst.IsDebugMode)
+        if (rNoExtract || !AppConst.IsPersistentMode)
         {
-
-            DebugConsole.Log("[extracted] or [Debug mode] is open");
+            DebugConsole.Log("[extracted] or [ NOT IS PersistentMode]");
             StartCoroutine(OnUpdateResource());
             return;
         }

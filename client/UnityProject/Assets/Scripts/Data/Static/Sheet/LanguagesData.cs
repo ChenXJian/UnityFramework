@@ -95,7 +95,7 @@ public class LanguagesDataManager
 		}
 	}
 
-	public LanguagesData Get(UInt16 key)
+	public LanguagesData Get(Byte key)
 	{
 		if (!hashTable.ContainsKey(key))
 		{

@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 4187581072
+CRC: 2482124732
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: fd656eb192fc9d0ea2b992980f34f530
+    Hash: 2555be1ec21fa3f619710bb3bc30784f
   TypeTreeHash:
     serializedVersion: 2
-    Hash: a3517b368293a73fb30c8488b5b6bcad
+    Hash: 4f582e19edaea9a6e97feafac53fcb94
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -23,8 +23,6 @@ ClassTypes:
   Script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
 - Class: 114
   Script: {fileID: 708705254, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
-- Class: 114
-  Script: {fileID: 11500000, guid: 4fc1a9fe1b2444b2192a74dd64c1c315, type: 3}
 - Class: 115
   Script: {instanceID: 0}
 - Class: 128
@@ -37,5 +35,4 @@ ClassTypes:
   Script: {instanceID: 0}
 Assets:
 - Assets/RawResources/UI/SampleTwoPanel/SampleTwoPanel.prefab
-Dependencies:
-- D:/EasyUnityFramework/client/UnityProject/Assets/StreamingAssets/Windows_Assetbundles/ui/common.unity3d
+Dependencies: []

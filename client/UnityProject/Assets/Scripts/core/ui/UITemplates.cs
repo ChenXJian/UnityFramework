@@ -108,7 +108,7 @@ public class UITemplates<T> where T : MonoBehaviour, ITemplatable
 
         if ((!Exists(name)) || (templates[name] == null))
         {
-            DebugConsole.LogError("Not found template with name '" + name + "'");
+            Debug.LogError("Not found template with name '" + name + "'");
         }
 
         T template;

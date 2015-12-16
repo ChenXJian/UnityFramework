@@ -79,13 +79,15 @@ public static class AppPlatform
             {
                 return Application.persistentDataPath + "/" + game + "/";
             }
-            //测试走流文件
-            if (AppConst.IsDebugMode)
+
+            //IsPersistentMode
+            if (AppConst.IsPersistentMode)
             {
-                return Application.dataPath + "/" + AppConst.AssetDirName + "/";
+                return "c:/" + game + "/";
+
             }
-            //非测试
-            return "c:/" + game + "/";
+
+            return Application.dataPath + "/" + AppConst.AssetDirName + "/";
         }
     }
 

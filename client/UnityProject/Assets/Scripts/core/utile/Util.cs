@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using System.Text;
 public class Util : MonoBehaviour
 {
+
     public static String GetReadableByteSize(double size)
     {
         String[] units = new String[] { "B", "KB", "MB", "GB", "TB", "PB" };
@@ -31,17 +32,6 @@ public class Util : MonoBehaviour
         rGo.transform.localScale = rParent.transform.localScale;
         rGo.transform.localRotation = rParent.transform.localRotation;
         return rGo;
-    }
-
-    /// <summary>
-    /// 对物体的tranform归零
-    /// </summary>
-    public static void ResetTransform(GameObject obj)
-    {
-        obj.transform.localPosition = Vector3.zero;
-        obj.transform.localScale = Vector3.one;
-        obj.transform.localRotation = Quaternion.identity;
-       
     }
 
     /// <summary>
