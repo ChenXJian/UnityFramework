@@ -174,10 +174,15 @@ namespace HotFixCode
 
         void TestSceneChange()
         {
-            gate.SceneManager.EnterScene(SceneName.Test, () =>
+            gate.SceneManager.EnterScene(SceneName.Test,
+            () =>
             {
                 Debug.Log("进入到场景" + SceneName.Test);
                 gate.PanelManager.PushPanel(LogicName.SampleTwo);
+            },
+            () =>
+            {
+                Debug.Log("asdas");
             });
         }
 
@@ -214,6 +219,7 @@ namespace HotFixCode
 
         protected override void Startup(RectTransform parent)
         {
+            base.Startup(parent);
             UIGenerator.Instance.CreateUI(PanelName.Sample, parent, OnCreated);
         }
 

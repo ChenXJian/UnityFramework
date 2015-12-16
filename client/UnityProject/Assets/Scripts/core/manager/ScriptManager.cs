@@ -12,10 +12,10 @@ public class ScriptManager : TSingleton<ScriptManager>
 
     public void Initialize()
     {
-        //创建CLRSharp环境
+
         env = new CLRSharp.CLRSharp_Environment(new Logger());
 
-        //加载L#模块
+
         TextAsset dll = Resources.Load("HotFixCode.dll") as TextAsset;
         System.IO.MemoryStream msDll = new System.IO.MemoryStream(dll.bytes);
 
@@ -27,7 +27,6 @@ public class ScriptManager : TSingleton<ScriptManager>
         //env.LoadModule(msDll, msMdb, new Mono.Cecil.Mdb.MdbReaderProvider());//如果符号是Mdb格式
         Debug.Log("LoadModule HotFixCode.dll done.");
 
-        //建立一个线程上下文，用来模拟L#的线程模型，每个线程一个。
         context = new CLRSharp.ThreadContext(env);
         Debug.Log("Create ThreadContext for L#.");
 

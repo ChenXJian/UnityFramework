@@ -86,14 +86,14 @@ public class PanelManager : TSingleton<PanelManager>
         return isExist;
     }
 
-    public void PushPanel(string rLogicName)
+    public UIPanel PushPanel(string rLogicName)
     {
         if (panelCur != null && panelCur.LogicName != "Noting" && panelCur.PanelName != "Noting")
         {
             if (panelCur.LogicName == rLogicName)
             {
-                DebugConsole.Log(rLogicName + " is repeat");
-                return;
+                Debug.Log(rLogicName + " is repeat");
+                return panelCur;
             }
 
             if (panelCur.LogicObject != null)
@@ -127,17 +127,16 @@ public class PanelManager : TSingleton<PanelManager>
             Util.CallScriptFunction(panelCur.LogicObject, panelCur.LogicName, startupName, RootNode);
 
         }
+        return panelCur;
     }
 
-    public void PopPanel()
+    public UIPanel PopPanel()
     {
         if (_panelStack.Count < 2)
         {
-            DebugConsole.Log("_panelStack is null or count just be one, don't can Pop Panel");
-            return;
+            throw new UnassignedReferenceException("_panelStack don't can Pop Panel");
         }
 
-        //exchange position
         var panel = _panelStack.Pop();
         Util.CallScriptFunction(panel.LogicObject, panel.LogicName, disableName);
         panelCur = _panelStack.Pop();
@@ -145,6 +144,7 @@ public class PanelManager : TSingleton<PanelManager>
 
         _panelStack.Push(panel);
         _panelStack.Push(panelCur);
+        return panel;
     }
 
     public void ReplacePanel(string rLogicName)
@@ -183,14 +183,25 @@ public class PanelManager : TSingleton<PanelManager>
 
     public void ClearStackUnlessFocus()
     {
-        _panelStack.ForEach((item) =>
-        {
-            if(item.LogicName == panelCur.LogicName) return;
-            Util.CallScriptFunction(item.LogicObject, item.LogicName, freeName);
-            item = null;
-        });
+        List<UIPanel> temp = new List<UIPanel>(_panelStack);
+
         _panelStack.Clear();
         _panelStack.TrimExcess();
+
+        for(int i = 0; i < temp.Count; i++)
+        {
+            if (temp[i].LogicName == panelCur.LogicName) 
+            {
+                continue;
+            }
+            else
+            {
+                Util.CallScriptFunction(temp[i].LogicObject, temp[i].LogicName, freeName);
+                temp.RemoveAt(i);
+            }
+        }
+
+        _panelStack = new Stack<UIPanel>(temp);
     }
 
     void StickElement(UIPanel element)

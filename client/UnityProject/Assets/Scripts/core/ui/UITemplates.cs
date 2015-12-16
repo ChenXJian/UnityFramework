@@ -39,6 +39,7 @@ public class UITemplates<T> where T : MonoBehaviour, ITemplatable
         {
             ClearCache(x);
         });
+        findTemplatesCalled = false;
     }
 
     public void ClearCache(string name)

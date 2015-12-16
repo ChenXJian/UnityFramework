@@ -70,6 +70,15 @@ public class ModleLayer : MonoBehaviour, ITemplatable
         usedPool.Remove(index);
     }
 
+    public static void SetRenderOrder(int index, int order)
+    {
+        usedPool[index].transform.SetSiblingIndex(order);
+    }
+
+    public static int GetRenderOrder(int index)
+    {
+        return usedPool[index].transform.GetSiblingIndex();
+    }
 
     static void CreateTemplate()
     {
@@ -81,6 +90,4 @@ public class ModleLayer : MonoBehaviour, ITemplatable
 
         Templates.Add(key, rModal);
     }
-
-
 }

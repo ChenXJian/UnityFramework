@@ -34,6 +34,7 @@ namespace HotFixCode
 
         protected override void Startup(RectTransform parent)
         {
+            base.Startup(parent);
             UIGenerator.Instance.CreateUI(PanelName.SampleTwo, parent, OnCreated);
         }
 

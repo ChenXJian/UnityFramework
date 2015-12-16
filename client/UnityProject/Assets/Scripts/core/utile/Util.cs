@@ -331,8 +331,6 @@ public class Util : MonoBehaviour
     /// </summary>
     public static void ClearUICache()
     {
-        ModleLayer.Templates.ClearAll();
-        WaitingLayer.Templates.ClearAll();
         DialogBox.Templates.ClearAll();
         PopupWindow.Templates.ClearAll();
         gate.PanelManager.ClearStack();

@@ -1,27 +1,40 @@
 ﻿using UnityEngine;
 using System;
 using System.Collections;
+
 public class SceneManager : MonoBehaviour 
 {
     int progress = 0;
     string loadSceneName = null;
-    UnityEngine.Events.UnityAction onLoadComplete = null;
-    AsyncOperation async = null;
+    int displayProgress = 0;
 
-    AssetBundle sceneBundle = null;
-
-    public bool IsLoading { get; set; }
-
-    const string logicName = "LoadingLogic";
     const string callSetTips = "SetProgressbarTips";
     const string callSetValue = "SetProgressbarValue";
 
+    AsyncOperation async = null;
+    AssetBundle sceneBundle = null;
 
-    public void EnterScene(string sceneName, UnityEngine.Events.UnityAction rFunc)
+    UnityEngine.Events.UnityAction OnInitializeScene = null;
+    UnityEngine.Events.UnityAction OnInitializeSceneComplete = null;
+
+    public bool IsLoading { get; set; }
+
+    public void EnterScene(string rSceneName, UnityEngine.Events.UnityAction rOnInitSceneBegin = null, UnityEngine.Events.UnityAction rOnInitSceneEnd = null)
     {
-        gate.PanelManager.PushPanel(logicName);
-        loadSceneName = sceneName;
-        onLoadComplete = rFunc;
+        if (String.IsNullOrEmpty(rSceneName))
+        {
+            throw new NullReferenceException("loadSceneName is null");
+        }
+        else
+        {
+            loadSceneName = rSceneName;
+        }
+
+        OnInitializeScene = rOnInitSceneBegin;
+        OnInitializeSceneComplete = rOnInitSceneEnd;
+
+        LoadingLayer.Show();
+
         LoadScene();
     }
 
@@ -32,25 +45,12 @@ public class SceneManager : MonoBehaviour
 
     IEnumerator LoadSceneBundle()
     {
-        var rPanel = gate.PanelManager.PanelCurrent;
 
-        //检查Loading UI 
-        while (true)
-        {
-            if (rPanel != null &&
-                rPanel.LogicName == logicName &&
-                rPanel.IsCreated == true)
-                break;
-            else
-                yield return new WaitForEndOfFrame();
-        }
-
-        if (String.IsNullOrEmpty(loadSceneName)) yield break;
+        LoadingLayer.SetProgressbarTips("Loading Scene...");
+        LoadingLayer.SetProgressbarValue(1);
 
         var rUrl = AppPlatform.GetSceneBundleDirUrl() + loadSceneName.ToLower() + ".unity3d";
         Debug.Log("[DownloadSceneBundle]:>" + rUrl);
-
-        Util.CallScriptFunction(rPanel.LogicObject, rPanel.LogicName, callSetTips, "Loading...");
         var download = new WWW(rUrl);
         yield return download;
 
@@ -62,15 +62,14 @@ public class SceneManager : MonoBehaviour
 
         sceneBundle = download.assetBundle;
 
-        this.StartCoroutine(LoadSceneInternal(rPanel));
+        StartCoroutine(LoadSceneInternal());
     }
 
-    IEnumerator LoadSceneInternal(UIPanel rPanel)
+    IEnumerator LoadSceneInternal()
     {
-        int rDisplayProgress = 0;
-        //加载场景
-        Util.CallScriptFunction(rPanel.LogicObject, rPanel.LogicName, callSetTips, "Loading Scene ...");
-        Util.CallScriptFunction(rPanel.LogicObject, rPanel.LogicName, callSetValue, rDisplayProgress);
+        displayProgress = 5;
+        LoadingLayer.SetProgressbarTips("Scene Initialize ...");
+        LoadingLayer.SetProgressbarValue(displayProgress);
 
         async = Application.LoadLevelAsync(loadSceneName);
         IsLoading = true;
@@ -79,46 +78,68 @@ public class SceneManager : MonoBehaviour
         while (async.progress < 0.9f)
         {
             progress = (int)async.progress * 100;
-            while (rDisplayProgress < progress)
+            while (displayProgress < progress)
             {
-                ++rDisplayProgress;
-                Util.CallScriptFunction(rPanel.LogicObject, rPanel.LogicName, callSetValue, rDisplayProgress);
+                ++displayProgress;
+                LoadingLayer.SetProgressbarValue(displayProgress);
                 yield return new WaitForEndOfFrame();
             }
-            yield return null;
-        }
-
-        progress = 100;
-
-        while (rDisplayProgress < progress)
-        {
-
-            ++rDisplayProgress;
-            Util.CallScriptFunction(rPanel.LogicObject, rPanel.LogicName, callSetValue, rDisplayProgress);
             yield return new WaitForEndOfFrame();
-
         }
+
+        progress = 90;
+        while (displayProgress < progress)
+        {
+            ++displayProgress;
+            LoadingLayer.SetProgressbarValue(displayProgress);
+            yield return new WaitForEndOfFrame();
+        }
+         
         async.allowSceneActivation = true;
-        LoadSceneComplete();
+        InitializeScene();
+
         IsLoading = false;
     }
 
-    void LoadSceneComplete()
+    void InitializeScene()
     {
         Util.ClearUICache();
         Util.ClearMemory();
-        sceneBundle.Unload(false);
 
-        // 加载完成
-        if (onLoadComplete != null)
+        if (OnInitializeScene != null)
         {
-            onLoadComplete.Invoke();
-            onLoadComplete = null;
+            OnInitializeScene.Invoke();
+            OnInitializeScene = null;
+        }
+
+        StartCoroutine(OnInitializeComplete());
+    }
+
+    IEnumerator OnInitializeComplete()
+    {
+        progress = 100;
+
+        while (displayProgress < progress)
+        {
+
+            ++displayProgress;
+            LoadingLayer.SetProgressbarValue(displayProgress);
+            yield return new WaitForEndOfFrame();
         }
 
         loadSceneName = null;
         async = null;
         progress = 0;
-    }
+        displayProgress = 0;
+        sceneBundle.Unload(false);
 
+        LoadingLayer.Hide();
+
+        if (OnInitializeSceneComplete != null)
+        {
+            OnInitializeSceneComplete.Invoke();
+            OnInitializeSceneComplete = null;
+        }
+
+    }
 }

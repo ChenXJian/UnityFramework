@@ -19,7 +19,10 @@ namespace HotFixCode
         /// 被宿主程序启动
         /// </summary>
         /// <param name="parent">要挂载的UI Window</param>
-        protected abstract void Startup(RectTransform parent);
+        protected virtual void Startup(RectTransform parent)
+        {
+            WaitingLayer.Show();
+        }
 
         /// <summary>
         /// 供宿主程序创建面板后调用的回调
@@ -27,6 +30,7 @@ namespace HotFixCode
         /// <param name="rGo">回传的面板对象</param>
         protected virtual void OnCreated(GameObject rGo)
         {
+            WaitingLayer.Hide();
             gameObject = rGo;
             transform = rGo.GetComponent<Transform>();
             behaviour = rGo.GetComponent<ScriptBehaviour>();
