@@ -40,10 +40,11 @@ public class WaitingLayer : MonoBehaviour, ITemplatable
 
         var rect = layer.GetComponent<RectTransform>();
         rect.sizeDelta = new Vector2(100, 100);
-        rect.anchorMin = new Vector2(0, 0);
-        rect.anchorMax = new Vector2(0, 0);
+        rect.anchorMin = new Vector2(0.5f, 0.5f);
+        rect.anchorMax = new Vector2(0.5f, 0.5f);
         rect.pivot = new Vector2(0.5f, 0.5f);
-        rect.anchoredPosition = new Vector3(AppConst.ReferenceResolution.x / 2, AppConst.ReferenceResolution.y / 2, 0.0f);
+        rect.anchoredPosition = Vector3.zero;
+
 
         var img = layer.GetComponent<Image>();
 

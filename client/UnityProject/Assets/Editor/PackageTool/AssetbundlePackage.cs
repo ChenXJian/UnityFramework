@@ -160,9 +160,23 @@ public class AssetbundlePackage
             for (int i = 0; i < rSubDirs.Length; i++)
             {
                 string rDirPath = rSubDirs[i].FullName;
-                string rRootPath = System.Environment.CurrentDirectory + "\\";
-                rDirPath = rDirPath.Replace(rRootPath, "").Replace("\\", "/");
-                string rFileName = Path.GetFileNameWithoutExtension(rDirPath);
+                string rFileName = "";
+                if (Application.platform == RuntimePlatform.WindowsEditor)
+                {
+                    string rRootPath = System.Environment.CurrentDirectory + "\\";
+                    rDirPath = rDirPath.Replace(rRootPath, "").Replace("\\", "/");
+                    rFileName = Path.GetFileNameWithoutExtension(rDirPath);
+                }
+                else if (Application.platform == RuntimePlatform.OSXEditor)
+                {
+                    string rRootPath = System.Environment.CurrentDirectory + "/";
+                    rDirPath = rDirPath.Replace(rRootPath, "");
+                    rFileName = Path.GetFileNameWithoutExtension(rDirPath);
+                }
+                else
+                {
+                    throw new System.NotSupportedException("当前运行平台不支持打包操作");
+                }
 
                 AssetBundleBuild rABB = new AssetBundleBuild();
                 rABB.assetBundleName = bundleInfo.name + "/" + rFileName;

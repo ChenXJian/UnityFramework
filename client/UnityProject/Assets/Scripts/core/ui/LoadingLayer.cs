@@ -38,9 +38,9 @@ public class LoadingLayer : MonoBehaviour, ITemplatable
         layer.gameObject.SetActive(true);
 
         var rect = layer.GetComponent<RectTransform>();
-        rect.sizeDelta = new Vector2(0, 0);
-        rect.anchorMin = new Vector2(0, 0);
-        rect.anchorMax = new Vector2(0, 0);
+        rect.sizeDelta = new Vector2(AppConst.ReferenceResolution.x, AppConst.ReferenceResolution.y);
+        rect.anchorMin = new Vector2(0.5f, 0.5f);
+        rect.anchorMax = new Vector2(0.5f, 0.5f);
         rect.pivot = new Vector2(0.5f, 0.5f);
         rect.anchoredPosition = Vector3.zero;
 

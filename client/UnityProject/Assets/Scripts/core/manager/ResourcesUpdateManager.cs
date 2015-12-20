@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-using System.IO; 
+using System.IO;
 
 public class ResourcesUpdateManager : MonoBehaviour
 {
@@ -10,7 +10,8 @@ public class ResourcesUpdateManager : MonoBehaviour
 
     public void ResourceUpdateStart(System.Action func)
     {
-        if(func != null)
+        LoadingLayer.Show();
+        if (func != null)
         {
             OnResourceUpdateComplete = func;
         }
@@ -19,19 +20,21 @@ public class ResourcesUpdateManager : MonoBehaviour
 
     void ResourceUpdateEnd()
     {
-        Debug.Log("[ResourceUpdateEnd]");
+        DebugConsole.Log("[ResourceUpdateEnd]");
         if (OnResourceUpdateComplete != null)
         {
             OnResourceUpdateComplete.Invoke();
             OnResourceUpdateComplete = null;
         }
+        LoadingLayer.Hide();
     }
-    
+
     void CheckExtractResource()
     {
         bool rNoExtract = Directory.Exists(AppPlatform.RuntimeAssetsPath) && File.Exists(AppPlatform.RuntimeAssetsPath + "files.txt");
         if (rNoExtract || !AppConst.IsPersistentMode)
         {
+
             DebugConsole.Log("[extracted] or [ NOT IS PersistentMode]");
             StartCoroutine(OnUpdateResource());
             return;
@@ -42,6 +45,7 @@ public class ResourcesUpdateManager : MonoBehaviour
 
     IEnumerator OnExtractResource()
     {
+        LoadingLayer.SetProgressbarTips("开始解包资源文件");
         string rAssetsPath = AppPlatform.AssetsPath;
         string rRuntimeAssetsPath = AppPlatform.RuntimeAssetsPath;
 
@@ -77,8 +81,14 @@ public class ResourcesUpdateManager : MonoBehaviour
 
         //释放所有文件到运行时读取目录
         string[] files = File.ReadAllLines(outfile);
-        foreach (var file in files)
+
+        for (int i = 0; i < files.Length; i++)
         {
+            float p = ((i + 1f) / files.Length) * 100;
+            p = Mathf.Clamp(p, 0, 100);
+            LoadingLayer.SetProgressbarValue((int)p);
+
+            var file = files[i];
             string[] rKeyValue = file.Split('|');
             infile = rAssetsPath + rKeyValue[0];
             outfile = rRuntimeAssetsPath + rKeyValue[0];
@@ -110,8 +120,10 @@ public class ResourcesUpdateManager : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
 
+        LoadingLayer.SetProgressbarTips("解包资源文件完成");
         DebugConsole.Log("[extract complete]");
         yield return new WaitForSeconds(0.1f);
+
 
         //解包完成，开始启动更新资源
         StartCoroutine(OnUpdateResource());
@@ -125,7 +137,7 @@ public class ResourcesUpdateManager : MonoBehaviour
             ResourceUpdateEnd();
             yield break;
         }
-
+        LoadingLayer.SetProgressbarTips("开始更新资源");
         string rRuntimeAssetsPath = AppPlatform.RuntimeAssetsPath;
         string url = ResourcesUpdateUrl;
 
@@ -173,19 +185,20 @@ public class ResourcesUpdateManager : MonoBehaviour
             }
 
             if (canUpdate)
-            {  
+            {
                 //本地缺少文件
                 Debug.Log(fileUrl);
                 www = new WWW(fileUrl); yield return www;
                 if (www.error != null)
                 {
-                    Debug.Log(www.error+path);
+                    Debug.Log(www.error + path);
                     yield break;
                 }
                 File.WriteAllBytes(localfilePath, www.bytes);
-                
+
             }
         }
+        LoadingLayer.SetProgressbarTips("更新资源完成");
         yield return new WaitForEndOfFrame();
 
         ResourceUpdateEnd();
