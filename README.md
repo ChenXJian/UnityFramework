@@ -42,6 +42,19 @@ uEasyKit或参考设计思路，或直接代码引用了以下开源项目，在
 2. UnityProject: Unity工程文件夹
 3. HotFixExport: 热更新代码导出的DLL文件夹(生成热更新工程时产生，开发期间会Copy至UnityProject的Resources目录下，方便开发)
 
+**首次运行**
+1.生成Unity的解决方案。
+2.添加HotFixCode工程至上一步的解决方案
+3.生成HotFixCode
+4.打开Tool工具里的打包工具，生成场景包与其他资源包
+5.打开Launcher场景，并运行
+
+**常见问题**
+如果运行出错，请先检查以下问题
+1.脚本引用丢失，资源引用丢失
+2.Assetbundle文件是否存在
+3.AppDefine下的IsPersistentMode是否开启
+
 ## 联系方式
 QQ: 648398613  
 Email: 648398613@qq.com
