@@ -65,6 +65,12 @@ QQ: 648398613
 Email: 648398613@qq.com
 
 ## 版本记录
+V0.0.6_alpha[2015.01.06] 
+
+1. 升级Unity5.3版本
+2. 优化了高分辨率设备的帧率
+3. 更改SceneManager为SceneLoadManager
+
 V0.0.5_alpha[2015.12.20] 
 
 1. 修复打包工具在MAC上打包错误的问题
