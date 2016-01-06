@@ -174,7 +174,7 @@ namespace HotFixCode
 
         void TestSceneChange()
         {
-            gate.SceneManager.EnterScene(SceneName.Test,
+            gate.SceneLoadManager.EnterScene(SceneName.Test,
             () =>
             {
                 Debug.Log("进入到场景" + SceneName.Test);

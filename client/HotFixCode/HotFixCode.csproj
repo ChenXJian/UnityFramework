@@ -66,8 +66,6 @@
     <Compile Include="Code\Common\MainUpdate.cs" />
     <Compile Include="Code\Common\View\UIPopups.cs" />
     <Compile Include="Code\Common\View\UIView.cs" />
-    <Compile Include="Code\GUI\Loading\LoadingLogic.cs" />
-    <Compile Include="Code\GUI\Loading\LoadingPanel.cs" />
     <Compile Include="Code\GUI\SampleTwo\SampleTwoLogic.cs" />
     <Compile Include="Code\GUI\SampleTwo\SampleTwoPanel.cs" />
     <Compile Include="Code\GUI\Sample\SampleLogic.cs" />

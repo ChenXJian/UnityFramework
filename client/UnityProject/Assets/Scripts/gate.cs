@@ -77,11 +77,11 @@ public static class gate
         }
     }
 
-    public static SceneManager SceneManager
+    public static SceneLoadManager SceneLoadManager
     {
         get
         {
-            return ManagerCollect.Instance.GetManager<SceneManager>(ManagerName.Scene);
+            return ManagerCollect.Instance.GetManager<SceneLoadManager>(ManagerName.Scene);
         }
     }
 

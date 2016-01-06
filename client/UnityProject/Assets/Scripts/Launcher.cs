@@ -17,6 +17,7 @@ public class Launcher : MonoBehaviour
 
     void Launch()
     {
+        InitializeResolution();
         LaunchConsloe();
         LaunchGUI();
         LaunchMainUpdate();
@@ -79,13 +80,50 @@ public class Launcher : MonoBehaviour
         LaunchComplete();
     }
 
-     /*
-    void GameStart()
+
+    void InitializeResolution()
     {
-        //程序初始化完毕， 进入游戏
-        //gate.PanelManager.PushPanel("SampleLogic");
-        
-        LaunchComplete();
+#if UNITY_ANDROID
+        if (scaleWidth == 0 && scaleHeight == 0)
+        {
+            //1080 1920
+            //640  1136
+            int width = Screen.currentResolution.width;
+            DebugConsole.Log(width + "####");
+            int height = Screen.currentResolution.height;
+            DebugConsole.Log(height + "####");
+            int designWidth = (int)AppConst.ReferenceResolution.x;
+            int designHeight = (int)AppConst.ReferenceResolution.y;
+            float s1 = (float)designWidth / (float)designHeight;
+            float s2 = (float)width / (float)height;
+            if (s1 < s2)
+            {
+                designWidth = (int)Mathf.FloorToInt(designHeight * s2);
+            }
+            else if (s1 > s2)
+            {
+                designHeight = (int)Mathf.FloorToInt(designWidth / s2);
+            }
+            float contentScale = (float)designWidth / (float)width;
+            if (contentScale < 1.0f)
+            {
+                scaleWidth = designWidth;
+                scaleHeight = designHeight;
+            }
+        }
+
+        if (scaleWidth > 0 && scaleHeight > 0)
+        {
+            if (scaleWidth % 2 == 0)
+            {
+                scaleWidth += 1;
+            }
+            else
+            {
+                scaleWidth -= 1;
+            }
+            Screen.SetResolution(scaleWidth, scaleHeight, false);
+        }
+#endif
     }
-      * */
 }

@@ -53,7 +53,7 @@ public class GameController : MonoBehaviour
         ManagerCollect.Instance.AddManager<CroutineManager>(ManagerName.Croutine);
         ManagerCollect.Instance.AddManager<TimerManager>(ManagerName.Timer);
         ManagerCollect.Instance.AddManager<AssetLoadManager>(ManagerName.Asset);
-        ManagerCollect.Instance.AddManager<SceneManager>(ManagerName.Scene);
+        ManagerCollect.Instance.AddManager<SceneLoadManager>(ManagerName.Scene);
         ManagerCollect.Instance.AddManager<MusicManager>(ManagerName.Music);
         ManagerCollect.Instance.AddManager<GestureManager>(ManagerName.Gesture);
 

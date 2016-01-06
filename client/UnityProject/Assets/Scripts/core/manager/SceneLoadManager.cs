@@ -2,7 +2,7 @@
 using System;
 using System.Collections;
 
-public class SceneManager : MonoBehaviour 
+public class SceneLoadManager : MonoBehaviour 
 {
     int progress = 0;
     string loadSceneName = null;

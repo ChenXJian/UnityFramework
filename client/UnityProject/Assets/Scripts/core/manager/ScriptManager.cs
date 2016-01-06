@@ -22,9 +22,8 @@ public class ScriptManager : TSingleton<ScriptManager>
         TextAsset pdb = Resources.Load("HotFixCode.pdb") as TextAsset;
         System.IO.MemoryStream msPdb = new System.IO.MemoryStream(pdb.bytes);
 
-        // env.LoadModule(msDll);//如果无符号是pdb的话，第二个参数传null
         env.LoadModule(msDll, msPdb, new Mono.Cecil.Pdb.PdbReaderProvider());//Pdb
-        //env.LoadModule(msDll, msMdb, new Mono.Cecil.Mdb.MdbReaderProvider());//如果符号是Mdb格式
+
         Debug.Log("LoadModule HotFixCode.dll done.");
 
         context = new CLRSharp.ThreadContext(env);

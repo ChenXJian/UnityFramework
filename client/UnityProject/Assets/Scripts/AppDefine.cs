@@ -72,7 +72,7 @@ public class ManagerName
     public const string SocketClient = "SocketClientManager";
     public const string Asset = "AssetLoadManager";
     public const string Croutine = "CroutineManager";
-    public const string Scene = "SceneManager";
+    public const string Scene = "SceneLoadManager";
     public const string Gesture = "GestureManager";
     public const string ResourcesUpdate = "ResourcesUpdateManager";
 }
