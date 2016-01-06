@@ -89,9 +89,7 @@ public class Launcher : MonoBehaviour
             //1080 1920
             //640  1136
             int width = Screen.currentResolution.width;
-            DebugConsole.Log(width + "####");
             int height = Screen.currentResolution.height;
-            DebugConsole.Log(height + "####");
             int designWidth = (int)AppConst.ReferenceResolution.x;
             int designHeight = (int)AppConst.ReferenceResolution.y;
             float s1 = (float)designWidth / (float)designHeight;
