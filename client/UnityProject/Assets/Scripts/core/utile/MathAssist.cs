@@ -132,7 +132,24 @@ public class MathAssist
         Vector2 dest = new Vector2((float)(point.x + deltaX), (float)(point.y + deltaY));
         return dest;
     }
-
+    
+    /* 手写代码需要改动
+    /// <summa
+    /// 圆范围内随机一个点
+    /// </summary>
+    public static Vector2 PointWithCircleRand(Vector2 origin, float radius)
+    {
+        float angle = FMath::RandRange(0, 360);
+	    float distance = FMath::RandRange(0, radius);
+	    
+        var radian = angle * Math.PI / 180;
+        var deltaX = Math.Sin(radian) * distance; //X 轴的增量 
+        var deltaY = Math.Cos(radian) * distance; //y 轴的增量 
+        Vector2 dest = new Vector2((float)(origin.x + deltaX), (float)(origin.y + deltaY));
+        return dest;ry>
+    }
+    */
+    
     /// <summary>
     /// 弧度转角度
     /// </summary>
