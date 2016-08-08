@@ -139,15 +139,31 @@ public class MathAssist
     /// </summary>
     public static Vector2 PointWithCircleRand(Vector2 origin, float radius)
     {
-        float angle = FMath::RandRange(0, 360);
-	    float distance = FMath::RandRange(0, radius);
+        float angle = Math::RandRange(0, 360);
+	    float distance = Math::RandRange(0, radius);
 	    
         var radian = angle * Math.PI / 180;
         var deltaX = Math.Sin(radian) * distance; //X 轴的增量 
         var deltaY = Math.Cos(radian) * distance; //y 轴的增量 
         Vector2 dest = new Vector2((float)(origin.x + deltaX), (float)(origin.y + deltaY));
-        return dest;ry>
+        return dest;
     }
+    
+    /// <summa
+    /// 圆范围内随机一个点,带内外圆
+    /// </summary>
+    public static Vector2 PointWithinCircleRandComplex(Vector2 Origin, float InnerCircleRadius, float OuterCircleRadius)
+    {
+	float angle = Math::RandRange(0, 360);
+	float distance = Math::RandRange(0, OuterCircleRadius);
+	distance = Math::Max(distance, InnerCircleRadius);
+	float radian = angle * PI / 180;
+	float deltaX = FMath::Sin(radian) * distance;
+	float deltaY = FMath::Cos(radian) * distance;
+	FVector2D dest = FVector2D((float)(Origin.X + deltaX), (float)(Origin.Y + deltaY));
+	return dest;
+    }
+
     */
     
     /// <summary>
