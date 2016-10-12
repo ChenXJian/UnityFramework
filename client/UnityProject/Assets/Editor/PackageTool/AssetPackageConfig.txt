@@ -1,1 +1,0 @@
-{"sceneDirectoryPath":"Assets/RawResources/Scene","bundles":[{"name":"localization","assetPath":"Assets/RawResources/Localization","packageType":"Dir"},{"name":"ui","assetPath":"Assets/RawResources/UI","packageType":"Dir_Dir"},{"name":"shader","assetPath":"Assets/RawResources/Shader","packageType":"Dir"}]}

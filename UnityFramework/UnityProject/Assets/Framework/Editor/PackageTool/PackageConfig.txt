@@ -1,0 +1,20 @@
+{
+    "mainVersion": "0",
+    "minorVersion": "21",
+    "rawScenePath": "Assets/RawResources/Scene",
+    "rawCodePath": "Assets/RawResources/Code",
+    "rawConfigPath": "Assets/RawResources/Config",
+    "rawDataTablePath": "Assets/RawResources/DataTable",
+    "bundles": [
+        {
+            "name": "localization",
+            "assetPath": "Assets/RawResources/Localization",
+            "packageType": "Dir"
+        },
+        {
+            "name": "ui",
+            "assetPath": "Assets/RawResources/UI",
+            "packageType": "Dir_Dir"
+        }
+    ]
+}
