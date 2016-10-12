@@ -1,24 +1,20 @@
-# uEasyKit
+# UnityFramework
+
 
 ## 简述
-uEasyKit是基于Unity3D 5.0版本实现的一套使用简单的开源游戏开发工具集
+UnityFramework是基于Unity3D 5.4版本 + L#实现的一套热更新架构
 
-* Unity版本 : 5.2.0f3  
+* Unity版本 : 5.4 
 * UI : UGUI
 * 热更新系统 : C#代码全平台热更新（L#）
 * 资源打包系统 ： Unity5.0新打包系统
-* 网络 ： TCP + HTTP
-
-
-备注: （请第一次运行出问题的同学耐心一点，慢慢跟下问题，多半是引用丢失的问题，所以还请出问题的同学耐心跟下问题，首次运行出现的问题都是非常简单的问题）
 
 ## 引用
 
-uEasyKit或参考设计思路，或直接代码引用了以下开源项目，在此表示感谢与尊敬
+UnityFramework或参考设计思路，或直接代码引用了以下开源项目，在此表示感谢与尊敬
 
 * L#
 * SimpleFramework
-* JsonFX
 * UIWidget
 * DOTween
 * TsiU
@@ -26,16 +22,10 @@ uEasyKit或参考设计思路，或直接代码引用了以下开源项目，在
 ## 支持功能
 
 * C#脚本全平台热更新(L#)
-* TCP消息+HTTP请求的封装
-* UGUI常用控件实现（ListView, Draggable, DialogBox, Progressbar, Tab）
-* 基于MVC理念的简洁UI架构实现
-* Assetbundle打包与加载系统
-* 丰富的扩展功能（摄像机，行为树...等等）
-* 通用模块的统一管理（手势消息分发，场景管理，网络...等等）
-* 常用函数的封装（数学计算，文件操作...等等）
-* 不同模块间的简洁通信机制（也同样支持脚本代码与原生代码）
-* 调式工具集
-* 多语言本地化功能（支持图片变更）
+* 简洁的手游UI架构
+* 简洁资源管理解决方案，包括Assetbundle
+* 丰富的扩展功能（gamepaly，行为树，网络，数据，多语言...等等）
+* 常用函数的封装（数学计算，文件操作，调试工具...等等）
 
 ## 使用说明
 
@@ -43,28 +33,29 @@ uEasyKit或参考设计思路，或直接代码引用了以下开源项目，在
 
 1. HotFixCode: 热更新代码工程文件夹
 2. UnityProject: Unity工程文件夹
-3. HotFixExport: 热更新代码导出的DLL文件夹(生成热更新工程时产生，开发期间会Copy至UnityProject的Resources目录下，方便开发)
+3. HotFixExport: 热更新代码导出的DLL文件夹(生成热更新工程时产生，开发期间会Copy至UnityProject的RawResources目录下，方便开发)
 
 **首次运行**  
 
 1.生成Unity的解决方案  
 2.添加HotFixCode工程至上一步的解决方案  
-3.生成HotFixCode  
-4.打开Tool工具里的打包工具，生成场景包与其他资源包  
-5.打开Launcher场景，并运行  
-
-**常见问题**  
-
-如果运行出错，请先检查以下问题  
-1.脚本引用丢失，资源引用丢失  
-2.Assetbundle文件是否存在  
-3.AppDefine下的IsPersistentMode是否开启  
+3.编译HotFixCode
+4.打开Tool工具里的打包工具，生成资源包  
+5.打开Launcher场景，并运行
 
 ## 联系方式
-QQ: 648398613  
-Email: 648398613@qq.com
+QQ: 648398613
+微信: yangyi75
 
 ## 版本记录
+V1.0.0_alpha[2016.01.06] 
+
+1. 升级Unity5.4版本
+2. 从uEasyKit更名为UnityFramework
+3. 大量修复老版本bug
+4. 重新组织架构
+5. 将数据与网络等模块尽可能的移出架构，便于集成
+
 V0.0.6_alpha[2016.01.06] 
 
 1. 升级Unity5.3版本
