@@ -60,7 +60,7 @@ build/
 *.meta
 *.obj
 *.pch
-*.pdb
+#*.pdb
 *.pgc
 *.pgd
 *.rsp
@@ -234,9 +234,6 @@ pip-log.txt
 *.pidb
 *.booproj
 
-# Unity3D generated meta files
-*.pidb.meta
-
 # Unity3D Generated File On Crash Reports
 sysinfo.txt
 
@@ -245,4 +242,6 @@ sysinfo.txt
 #############
 
 # 不忽略HotFixCode.csproj文件
+/UnityFramework/HotFixExport/*
 !HotFixCode.csproj
+!*.meta

@@ -842,12 +842,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 084360db86621c64c9d048180b6a4e8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  textContent: {fileID: 114000014120065652}
-  filler: {fileID: 224000011284475076}
-  fillSlot: {fileID: 224000012139017936}
-  determinateBar: {fileID: 1000012360457628}
-  indeterminateBar: {fileID: 1000012609909078}
-  indeterminateImage: {fileID: 114000013613327844}
+  textContent: {fileID: 3}
+  filler: {fileID: 0}
+  fillSlot: {fileID: 0}
+  determinateBar: {fileID: 1701667186}
+  indeterminateBar: {fileID: 60593056}
+  indeterminateImage: {fileID: 59425568}
   speed: 0.1
   max: 100
   _value: 11
@@ -974,7 +974,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1000010939740360}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ff19ae369305752418f8ee06d03084f5, type: 3}
+  m_Script: {fileID: 11500000, guid: 48d8735be7185bd4089898025d66ee5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &114000011227304446
@@ -1257,7 +1257,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1000011737494930}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 49fd8a766bb649d4a84137fb0a45c82f, type: 3}
+  m_Script: {fileID: 11500000, guid: ebdbcb0b735e9f7468d9d74e76eeca67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &114000013188487572
@@ -1539,7 +1539,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1000013152453318}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 263e7d26828674f469e4bdc4b07f2767, type: 3}
+  m_Script: {fileID: 11500000, guid: 23d8cd96042b7f54c94e8aaafeb58af9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   defaultButton: {fileID: 114000010220511224}
@@ -1875,7 +1875,7 @@ RectTransform:
   m_RootOrder: 0
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 289.5, y: -55.5}
+  m_AnchoredPosition: {x: 254.5, y: -55.5}
   m_SizeDelta: {x: 30, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224000010893986608
@@ -1894,7 +1894,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 380, y: -55.5}
-  m_SizeDelta: {x: 131, y: 22}
+  m_SizeDelta: {x: 201, y: 33}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224000010921391076
 RectTransform:

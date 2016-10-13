@@ -1,6 +1,6 @@
 {
     "mainVersion": "0",
-    "minorVersion": "21",
+    "minorVersion": "25",
     "rawScenePath": "Assets/RawResources/Scene",
     "rawCodePath": "Assets/RawResources/Code",
     "rawConfigPath": "Assets/RawResources/Config",
