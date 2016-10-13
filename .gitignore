@@ -241,7 +241,8 @@ sysinfo.txt
 ## Custom
 #############
 
-# 不忽略HotFixCode.csproj文件
 /UnityFramework/HotFixExport/*
+/UnityFramework/UnityProject/Assets/StreamingAssets*
+/UnityFramework/UnityProject/Assets/StreamingAssets/*.meta
 !HotFixCode.csproj
 !*.meta

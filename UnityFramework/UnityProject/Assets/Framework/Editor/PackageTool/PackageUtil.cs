@@ -8,23 +8,21 @@ public class PackageUtil
 {
     public static void GeneratorChecklist()
     {
-        var rAssetsPath = PackagePlatform.GetPackagePath();
-        string newFilePath = rAssetsPath + "/checklist.txt";
+        string newFilePath = PackagePlatform.GetPackagePath() + Global.PackageManifestFileName;
         if (File.Exists(newFilePath)) File.Delete(newFilePath);
         
         List<string> files = new List<string>();
-        Util.RecursiveDir(rAssetsPath, ref files);
+        Util.RecursiveDir(PackagePlatform.GetPackagePath(), ref files);
 
         FileStream fs = new FileStream(newFilePath, FileMode.CreateNew);
         StreamWriter sw = new StreamWriter(fs);
         for (int i = 0; i < files.Count; i++)
         {
             string file = files[i];
-            //string ext = Path.GetExtension(file);
             if (file.EndsWith(".meta") || file.Contains(".DS_Store")) continue;
 
             string md5 = Util.MD5File(file);
-            string value = file.Replace(rAssetsPath, string.Empty);
+            string value = file.Replace(PackagePlatform.GetPackagePath(), string.Empty);
             sw.WriteLine(value + "|" + md5);
         }
         sw.Close(); fs.Close();
@@ -33,8 +31,7 @@ public class PackageUtil
 
     public static void GeneratorVersion(string mainVersion, string minorVersion)
     {
-        var rAssetsPath = PackagePlatform.GetPackagePath();
-        string newFilePath = rAssetsPath + "/version.txt";
+        string newFilePath = PackagePlatform.GetPackagePath() + Global.PackageVersionFileName;
         if (File.Exists(newFilePath)) File.Delete(newFilePath);
         FileStream fs = new FileStream(newFilePath, FileMode.CreateNew);
         StreamWriter sw = new StreamWriter(fs);

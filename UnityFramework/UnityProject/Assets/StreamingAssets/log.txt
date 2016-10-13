@@ -7,4 +7,3 @@
 [AssetBundleDictionaryUrl]:file:///E:/UnityFramework/UnityFramework/UnityProject/Assets/StreamingAssets/Package_Windows/AssetBundles/
 [DownloadAssetBundle]:file:///E:/UnityFramework/UnityFramework/UnityProject/Assets/StreamingAssets/Package_Windows/AssetBundles/localization.bundle
 [DownloadAssetBundle]:file:///E:/UnityFramework/UnityFramework/UnityProject/Assets/StreamingAssets/Package_Windows/AssetBundles/ui/samplepanel.bundle
-[DownloadAssetBundle]:file:///E:/UnityFramework/UnityFramework/UnityProject/Assets/StreamingAssets/Package_Windows/AssetBundles/ui/sampletwopanel.bundle

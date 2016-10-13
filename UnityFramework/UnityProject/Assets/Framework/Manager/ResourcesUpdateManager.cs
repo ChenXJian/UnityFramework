@@ -4,8 +4,6 @@ using System.IO;
 
 public class ResourcesUpdateManager : MonoBehaviour
 {
-    const string ResourcesUpdateUrl = "http://120.92.21.214:5000/down/client/";
-
     System.Action OnResourceUpdateComplete;
 
     public void ResourceUpdateStart(System.Action func)
@@ -47,7 +45,7 @@ public class ResourcesUpdateManager : MonoBehaviour
         else
         {
             //不需要解包，直接更新
-            StartCoroutine(OnUpdateResource());
+            StartCoroutine(OnUpdatePackage());
         }
     }
 
@@ -106,47 +104,44 @@ public class ResourcesUpdateManager : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
 
-        //清理package文件夹
-        if (Directory.Exists(AppPlatform.GetRuntimePackagePath())) Directory.Delete(AppPlatform.GetRuntimePackagePath(), true);
-        Directory.CreateDirectory(AppPlatform.GetRuntimePackagePath());
 
-        //解包package的checklist
-        infile = AppPlatform.GetPackagePath() + "checklist.txt";
-        outfile = AppPlatform.GetRuntimePackagePath() + "checklist.txt";
-        if (File.Exists(outfile)) File.Delete(outfile);
+        //检查是否有预装package需要解包
+        bool needExtractPackage = true;
+
         if (AppPlatform.PlatformCurrent == Platform.Android)
         {
-            WWW www = new WWW(infile);
+            var ver = AppPlatform.GetPackagePath() + Global.PackageVersionFileName;
+            WWW www = new WWW(ver);
             yield return www;
 
-            if (www.isDone)
+            if (www.error != null)
             {
-                File.WriteAllBytes(outfile, www.bytes);
+                DebugConsole.Log("没有预装的Package");
+                www.Dispose();
+                needExtractPackage = false;
             }
-            yield return null;
+
         }
         else
         {
-            File.Copy(infile, outfile, true);
+            var ver = AppPlatform.GetPackagePath() + Global.PackageVersionFileName;
+            if (!File.Exists(ver))
+            {
+                DebugConsole.Log("没有预装的Package");
+                needExtractPackage = false;
+            }
         }
-        DebugConsole.Log("[extracting checklist]:>" + infile + "[TO]" + outfile);
-        yield return new WaitForEndOfFrame();
 
-        //解包package
-        string[] files = File.ReadAllLines(outfile);
-        float downloadedCount = 0f;
-        for (int i = 0; i < files.Length; i++)
+        if (needExtractPackage)
         {
-            var file = files[i];
-            string[] rKeyValue = file.Split('|');
-            infile = AppPlatform.GetPackagePath() + rKeyValue[0];
-            outfile = AppPlatform.GetRuntimePackagePath() + rKeyValue[0];
+            //清理package文件夹
+            if (Directory.Exists(AppPlatform.GetRuntimePackagePath())) Directory.Delete(AppPlatform.GetRuntimePackagePath(), true);
+            Directory.CreateDirectory(AppPlatform.GetRuntimePackagePath());
 
-            DebugConsole.Log("[extracting package]:>" + infile + "[TO]" + outfile);
-
-            string rDirName = Path.GetDirectoryName(outfile);
-            if (!Directory.Exists(rDirName)) Directory.CreateDirectory(rDirName);
-
+            //解包package的checklist
+            infile = AppPlatform.GetPackagePath() + Global.PackageManifestFileName;
+            outfile = AppPlatform.GetRuntimePackagePath() + Global.PackageManifestFileName;
+            if (File.Exists(outfile)) File.Delete(outfile);
             if (AppPlatform.PlatformCurrent == Platform.Android)
             {
                 WWW www = new WWW(infile);
@@ -156,65 +151,123 @@ public class ResourcesUpdateManager : MonoBehaviour
                 {
                     File.WriteAllBytes(outfile, www.bytes);
                 }
-                yield return 0;
+                yield return null;
             }
             else
             {
-                if (File.Exists(outfile))
-                {
-                    File.Delete(outfile);
-                }
                 File.Copy(infile, outfile, true);
             }
+            DebugConsole.Log("[extracting checklist]:>" + infile + "[TO]" + outfile);
             yield return new WaitForEndOfFrame();
 
-            downloadedCount++;
-            float p = (downloadedCount / (float)files.Length) * 100f;
-            p = Mathf.Clamp(p, 0, 100);
-            LoadingLayer.SetProgressbarValue((int)p);
+            //解包package
+            string[] files = File.ReadAllLines(outfile);
+            float downloadedCount = 0f;
+            for (int i = 0; i < files.Length; i++)
+            {
+                var file = files[i];
+                string[] rKeyValue = file.Split('|');
+                infile = AppPlatform.GetPackagePath() + rKeyValue[0];
+                outfile = AppPlatform.GetRuntimePackagePath() + rKeyValue[0];
+
+                DebugConsole.Log("[extracting package]:>" + infile + "[TO]" + outfile);
+
+                string rDirName = Path.GetDirectoryName(outfile);
+                if (!Directory.Exists(rDirName)) Directory.CreateDirectory(rDirName);
+
+                if (AppPlatform.PlatformCurrent == Platform.Android)
+                {
+                    WWW www = new WWW(infile);
+                    yield return www;
+
+                    if (www.isDone)
+                    {
+                        File.WriteAllBytes(outfile, www.bytes);
+                    }
+                    yield return 0;
+                }
+                else
+                {
+                    if (File.Exists(outfile))
+                    {
+                        File.Delete(outfile);
+                    }
+                    File.Copy(infile, outfile, true);
+                }
+                yield return new WaitForEndOfFrame();
+
+                downloadedCount++;
+                float p = (downloadedCount / (float)files.Length) * 100f;
+                p = Mathf.Clamp(p, 0, 100);
+                LoadingLayer.SetProgressbarValue((int)p);
+            }
         }
 
         LoadingLayer.SetProgressbarTips("解包资源文件完成");
         yield return new WaitForSeconds(0.1f);
 
-        StartCoroutine(OnUpdateResource());
+        StartCoroutine(OnUpdatePackage());
     }
 
 
-    IEnumerator OnUpdateResource()
+    IEnumerator OnUpdatePackage()
     {
         if (!Global.IsUpdateMode)
         {
             ResourceUpdateEnd();
             yield break;
         }
+
         LoadingLayer.SetProgressbarTips("开始更新资源");
-        string rRuntimeAssetsPath = AppPlatform.RuntimeAssetsPath;
-        string url = ResourcesUpdateUrl;
 
-        string listUrl = url + "checklist.txt";
-
-        WWW www = new WWW(listUrl);
+        //比对服务器版本
+        WWW www = new WWW(Global.ServerPackageVersionURL);
         yield return www;
 
         if (www.error != null)
         {
-            Debug.Log(www.error);
+            DebugConsole.Log("未在服务器上找到最新版本文件");
+            www.Dispose();
+            yield break;
+        }
+        var lastestVer = www.text;
+        var curVer = "";
+        if (File.Exists(AppPlatform.GetRuntimePackagePath() + Global.PackageVersionFileName))
+        {
+            curVer = FileUtil.ReadFile(AppPlatform.GetRuntimePackagePath() + Global.PackageVersionFileName);
+        }
+
+        if (curVer == lastestVer)
+        {
+            DebugConsole.Log("当前package已是最新版本，无需更新");
+            www.Dispose();
             yield break;
         }
 
-        if (!Directory.Exists(rRuntimeAssetsPath))
+
+        // 获取更新文件列表
+        string listUrl = Global.PackageUpdateURL + lastestVer + "/" + AppPlatform.GetPackageName() + "/" + Global.PackageManifestFileName;
+
+        www = new WWW(listUrl);
+        yield return www;
+
+        if (www.error != null)
         {
-            Directory.CreateDirectory(rRuntimeAssetsPath);
+            DebugConsole.Log("未在服务器上找到checklist");
+            www.Dispose();
+            yield break;
         }
 
-        File.WriteAllBytes(rRuntimeAssetsPath + "checklist.txt", www.bytes);
+        if (!Directory.Exists(AppPlatform.GetRuntimePackagePath()))
+        {
+            Directory.CreateDirectory(AppPlatform.GetRuntimePackagePath());
+        }
 
-        string filesText = www.text;
-        string[] files = filesText.Split('\n');
+        File.WriteAllBytes(AppPlatform.GetRuntimePackagePath() + Global.PackageManifestFileName, www.bytes);
 
-
-
+        //按照更新列表增量更新文件
+        string fileslist = www.text;
+        string[] files = fileslist.Split('\n');
         float downloadedCount = 0f;
         for (int i = 0; i < files.Length; i++)
         {
@@ -223,14 +276,14 @@ public class ResourcesUpdateManager : MonoBehaviour
             if (string.IsNullOrEmpty(files[i])) continue;
             string[] keyValue = files[i].Split('|');
             string fileName = keyValue[0];
-            string localfilePath = (rRuntimeAssetsPath + fileName).Trim();
+            string localfilePath = (AppPlatform.GetRuntimePackagePath() + fileName).Trim();
             string path = Path.GetDirectoryName(localfilePath);
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
             }
-            string fileUrl = url + fileName;
 
+            //检查是否可以更新这个文件
             bool canUpdate = !File.Exists(localfilePath);
             if (!canUpdate)
             {
@@ -240,11 +293,11 @@ public class ResourcesUpdateManager : MonoBehaviour
                 if (canUpdate) File.Delete(localfilePath);
             }
 
+            //可以更新这个文件
             if (canUpdate)
             {
-                //本地缺少文件
+                string fileUrl = Global.PackageUpdateURL + lastestVer + "/" + AppPlatform.GetPackageName() + "/" + fileName;
                 Debug.Log(fileUrl);
-
                 www = new WWW(fileUrl);
                 yield return www;
 
@@ -259,10 +312,9 @@ public class ResourcesUpdateManager : MonoBehaviour
                 float p = (downloadedCount / (float)files.Length) * 100f;
                 p = Mathf.Clamp(p, 0, 100);
                 LoadingLayer.SetProgressbarValue((int)p);
-
             }
-
         }
+
         www.Dispose();
         LoadingLayer.SetProgressbarTips("更新资源完成");
         yield return new WaitForEndOfFrame();

@@ -36,7 +36,25 @@ public static class Global
     /// </summary>
     public static Vector2 ReferenceResolution = new Vector2(720, 1280);
 
+    /// <summary>
+    /// 资源更新服务器URL
+    /// </summary>
+    public static string PackageUpdateURL = "http://000.00.00.000:0000/down/";
 
+    /// <summary>
+    /// Package版本文件名
+    /// </summary>
+    public static string PackageVersionFileName = "version.txt";
+
+    /// <summary>
+    /// Package清单文件名
+    /// </summary>
+    public static string PackageManifestFileName = "checklist.txt";
+
+    /// <summary>
+    /// 服务器Package版本文件URL
+    /// </summary>
+    public static string ServerPackageVersionURL = PackageUpdateURL + "LatestVer.txt";
 
 
     /// <summary>
