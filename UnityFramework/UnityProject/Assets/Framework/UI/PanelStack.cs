@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Reflection;
 
 
-public class PanelManager : TSingleton<PanelManager>
+public class PanelStack : TSingleton<PanelStack>
 {
     public class Panel
     {
@@ -47,7 +47,7 @@ public class PanelManager : TSingleton<PanelManager>
     const string startupName = "Startup";
     const string freeName = "Free";
 
-    PanelManager() { }
+    PanelStack() { }
 
     Transform RootNode
     {
@@ -100,7 +100,7 @@ public class PanelManager : TSingleton<PanelManager>
 
             if (panelCur.LogicObject != null)
             {
-                Util.CallScriptFunction(panelCur.LogicObject, panelCur.LogicName, disableName);
+                LShapUtil.CallScriptFunction(panelCur.LogicObject, panelCur.LogicName, disableName);
             }
         }
 
@@ -111,7 +111,7 @@ public class PanelManager : TSingleton<PanelManager>
         {
             panelCur = rPanel;
 
-            Util.CallScriptFunction(panelCur.LogicObject, panelCur.LogicName, enableName);
+            LShapUtil.CallScriptFunction(panelCur.LogicObject, panelCur.LogicName, enableName);
             StickUpElement(panelCur);
         }
         else
@@ -122,11 +122,11 @@ public class PanelManager : TSingleton<PanelManager>
             rNewPanel.IsCreated = false;
             rNewPanel.LogicName = rLogicName;
             rNewPanel.PanelName = rPanelName;
-            rNewPanel.LogicObject = Global.ScriptManager.CreateScriptObject(rLogicName);
+            rNewPanel.LogicObject = LShapUtil.CreateScriptObject(rLogicName);
             _panelStack.Push(rNewPanel);
 
             panelCur = rNewPanel;
-            Util.CallScriptFunction(panelCur.LogicObject, panelCur.LogicName, startupName, RootNode);
+            LShapUtil.CallScriptFunction(panelCur.LogicObject, panelCur.LogicName, startupName, RootNode);
 
         }
         return panelCur;
@@ -140,9 +140,9 @@ public class PanelManager : TSingleton<PanelManager>
         }
 
         var panel = _panelStack.Pop();
-        Util.CallScriptFunction(panel.LogicObject, panel.LogicName, disableName);
+        LShapUtil.CallScriptFunction(panel.LogicObject, panel.LogicName, disableName);
         panelCur = _panelStack.Pop();
-        Util.CallScriptFunction(panelCur.LogicObject, panelCur.LogicName, enableName);
+        LShapUtil.CallScriptFunction(panelCur.LogicObject, panelCur.LogicName, enableName);
 
         _panelStack.Push(panel);
         _panelStack.Push(panelCur);
@@ -166,7 +166,7 @@ public class PanelManager : TSingleton<PanelManager>
         }
 
         Panel panel = _panelStack.Pop();
-        Util.CallScriptFunction(panel.LogicObject, panel.LogicName, freeName);
+        LShapUtil.CallScriptFunction(panel.LogicObject, panel.LogicName, freeName);
         panel = null;
         panelCur = new Panel();
 
@@ -177,7 +177,7 @@ public class PanelManager : TSingleton<PanelManager>
     {
         _panelStack.ForEach((item) =>
         {
-            Util.CallScriptFunction(item.LogicObject, item.LogicName, freeName);
+            LShapUtil.CallScriptFunction(item.LogicObject, item.LogicName, freeName);
             item = null;
         });
         _panelStack.Clear();
@@ -199,7 +199,7 @@ public class PanelManager : TSingleton<PanelManager>
             }
             else
             {
-                Util.CallScriptFunction(temp[i].LogicObject, temp[i].LogicName, freeName);
+                LShapUtil.CallScriptFunction(temp[i].LogicObject, temp[i].LogicName, freeName);
                 temp.RemoveAt(i);
             }
         }

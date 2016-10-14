@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine.EventSystems;
 using UnityEngine.Events;
 
-public class UIEventListenerBasic :
+public class UIEventListener :
 MonoBehaviour,
 IPointerClickHandler,
 IPointerEnterHandler,
@@ -50,10 +50,10 @@ IDropHandler
         if (onDrag != null) onDrag(gameObject, eventData);
     }
 
-    public static UIEventListenerBasic Get(GameObject go)
+    public static UIEventListener Get(GameObject go)
     {
-        UIEventListenerBasic listener = go.GetComponent<UIEventListenerBasic>();
-        if (listener == null) listener = go.AddComponent<UIEventListenerBasic>();
+        UIEventListener listener = go.GetComponent<UIEventListener>();
+        if (listener == null) listener = go.AddComponent<UIEventListener>();
         return listener;
     }
 }

@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class MusicManager : MonoBehaviour 
+public class SoundManager : MonoBehaviour 
 {
     public AudioSource audioSource = null;
 
@@ -13,6 +13,7 @@ public class MusicManager : MonoBehaviour
         this.audioSource = GetComponent<AudioSource>();
         if (audioSource == null)
         {
+           
             audioSource = gameObject.AddComponent<AudioSource>();
         }
     }
@@ -45,7 +46,6 @@ public class MusicManager : MonoBehaviour
                 {
                     this.audioSource.Stop();
                     this.audioSource.clip = null;
-                    //Util.ClearMemory();
                 }
                 return;
             }
@@ -61,7 +61,6 @@ public class MusicManager : MonoBehaviour
         {
             this.audioSource.Stop();
             this.audioSource.clip = null;
-            //Util.ClearMemory();
         }
     }
 

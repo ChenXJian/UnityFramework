@@ -11,7 +11,7 @@ TagManager:
   - PanelCamera
   - EffectCamera
   - Templates
-  - MainUpdate
+  - MainTick
   - WorldCanvas
   layers:
   - Default

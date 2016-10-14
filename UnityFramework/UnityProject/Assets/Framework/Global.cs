@@ -6,11 +6,6 @@ using System.IO;
 
 public static class Global
 {
-
-    public static string BundleExtName = "bundle";
-
-    public static string DataDirName = "UnityFramework";
-
     /// <summary>
     /// 限帧（-1： 不限制）
     /// </summary>
@@ -56,6 +51,9 @@ public static class Global
     /// </summary>
     public static string ServerPackageVersionURL = PackageUpdateURL + "LatestVer.txt";
 
+    public static string BundleExtName = "bundle";
+
+    public static string DataDirName = "UnityFramework";
 
     /// <summary>
     /// 服务器配置表
@@ -93,51 +91,11 @@ public static class Global
         }
     }
 
-    public static ModelManager ModelManager
+    public static SoundManager SoundManager
     {
         get
         {
-            return ManagerCollect.Instance.GetManager<ModelManager>(ManagerName.Model);
-        }
-    }
-
-    public static ScriptManager ScriptManager
-    {
-        get
-        {
-            return ManagerCollect.Instance.GetManager<ScriptManager>(ManagerName.Script);
-        }
-    }
-
-    public static TimerManager TimerManager
-    {
-        get
-        {
-            return ManagerCollect.Instance.GetManager<TimerManager>(ManagerName.Timer);
-        }
-    }
-
-    public static MusicManager MusicManager
-    {
-        get
-        {
-            return ManagerCollect.Instance.GetManager<MusicManager>(ManagerName.Music);
-        }
-    }
-
-    public static PanelManager PanelManager
-    {
-        get
-        {
-            return ManagerCollect.Instance.GetManager<PanelManager>(ManagerName.Panel);
-        }
-    }
-
-    public static PopupsManager PopupsManager
-    {
-        get
-        {
-            return ManagerCollect.Instance.GetManager<PopupsManager>(ManagerName.Popups);
+            return ManagerCollect.Instance.GetManager<SoundManager>(ManagerName.Sound);
         }
     }
 
@@ -145,23 +103,15 @@ public static class Global
     {
         get
         {
-            return ManagerCollect.Instance.GetManager<AssetLoadManager>(ManagerName.Asset);
+            return ManagerCollect.Instance.GetManager<AssetLoadManager>(ManagerName.AssetLoad);
         }
     }
 
-    public static CoroutineManager CoroutineManager
+    public static TaskManager TaskManager
     {
         get
         {
-            return ManagerCollect.Instance.GetManager<CoroutineManager>(ManagerName.Coroutine);
-        }
-    }
-
-    public static SceneLoadManager SceneLoadManager
-    {
-        get
-        {
-            return ManagerCollect.Instance.GetManager<SceneLoadManager>(ManagerName.Scene);
+            return ManagerCollect.Instance.GetManager<TaskManager>(ManagerName.Task);
         }
     }
 
@@ -173,20 +123,11 @@ public static class Global
         }
     }
 
-    public static ResourcesUpdateManager ResourcesUpdateManager
-    {
-        get
-        {
-            return ManagerCollect.Instance.GetManager<ResourcesUpdateManager>(ManagerName.ResourcesUpdate);
-        }
-       
-    }
-
     public static GameController GameController
     {
         get
         {
-            return Global.MainUpdate.GetComponent<GameController>();
+            return Global.MainTick.GetComponent<GameController>();
         }
     }
 
@@ -276,14 +217,14 @@ public static class Global
         }
     }
 
-    public static Transform MainUpdate
+    public static Transform MainTick
     {
         get
         {
-            GameObject rGo = GameObject.FindWithTag("MainUpdate");
+            GameObject rGo = GameObject.FindWithTag("MainTick");
             if (rGo == null)
             {
-                throw new NullReferenceException("Not find MainUpdate");
+                throw new NullReferenceException("Not find MainTick");
             }
 
             return rGo.transform;

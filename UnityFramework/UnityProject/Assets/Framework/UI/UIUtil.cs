@@ -19,7 +19,7 @@ public class UIUtil : MonoBehaviour
             go.transform.localScale = Vector3.one;
             go.transform.localPosition = Vector3.zero;
             go.transform.localRotation = Quaternion.identity;
-            go.AddComponent<ScriptBehaviour>();
+            go.AddComponent<LShapBehaviour>();
             if (func != null)
             {
                 func(go);   //回传面板对象
@@ -55,8 +55,8 @@ public class UIUtil : MonoBehaviour
     public static void ClearUICache()
     {
         DialogBox.Templates.ClearAll();
-        Global.PopupsManager.ClearCache();
-        Global.PanelManager.ClearStack();
+        PopupsManager.Instance.ClearCache();
+        PanelStack.Instance.ClearStack();
     }
 
 }

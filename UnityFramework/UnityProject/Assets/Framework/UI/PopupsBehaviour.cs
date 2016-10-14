@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PopupsBehaviour : ScriptBehaviour, ITemplatable
+public class PopupsBehaviour : LShapBehaviour, ITemplatable
 {
     bool isTemplate = true;
 
@@ -95,7 +95,7 @@ public class PopupsBehaviour : ScriptBehaviour, ITemplatable
 
         if (TemplateName != null)
         {
-            Global.PopupsManager.Templates.Delete(TemplateName);
+            PopupsManager.Instance.Templates.Delete(TemplateName);
         }
     }
 }

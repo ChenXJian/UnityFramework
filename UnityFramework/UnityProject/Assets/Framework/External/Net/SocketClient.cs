@@ -30,29 +30,29 @@ public class SocketClient : MonoBehaviour
     byte[] receiveBuffer                = new byte[MAX_READ_LENGTH];
     object locker                       = new object();
 
-    static Queue<KeyValuePair<NetActionType, NetByteBuffer>> _events = new Queue<KeyValuePair<NetActionType, NetByteBuffer>>();
+    static Queue<KeyValuePair<NetActionType, NetBuffer>> _events = new Queue<KeyValuePair<NetActionType, NetBuffer>>();
 
     #region 事件处理
     public static void Logout()
     {
-        _events.Enqueue(new KeyValuePair<NetActionType, NetByteBuffer>(NetActionType.Logout, null));
+        _events.Enqueue(new KeyValuePair<NetActionType, NetBuffer>(NetActionType.Logout, null));
     }
 
     public static void SendConnectTCP()
     {
-        _events.Enqueue(new KeyValuePair<NetActionType, NetByteBuffer>(NetActionType.Connect, null));
+        _events.Enqueue(new KeyValuePair<NetActionType, NetBuffer>(NetActionType.Connect, null));
     }
 
-    public static void SendMessageTCP(NetByteBuffer buffer)
+    public static void SendMessageTCP(NetBuffer buffer)
     {
-        _events.Enqueue(new KeyValuePair<NetActionType, NetByteBuffer>(NetActionType.Message, buffer));
+        _events.Enqueue(new KeyValuePair<NetActionType, NetBuffer>(NetActionType.Message, buffer));
     }
 
     void Update()
     {
         while (_events.Count > 0)
         {
-            KeyValuePair<NetActionType, NetByteBuffer> _event = _events.Dequeue();
+            KeyValuePair<NetActionType, NetBuffer> _event = _events.Dequeue();
             switch (_event.Key)
             {
                 case NetActionType.Connect:
@@ -94,7 +94,7 @@ public class SocketClient : MonoBehaviour
        
         sendStream = client.GetStream();
         client.GetStream().BeginRead(receiveBuffer, 0, MAX_READ_LENGTH, new AsyncCallback(OnRead), null);
-        SocketClientManager.AddEvent(SocketStatusCMD.Connect, new NetByteBuffer());
+        SocketClientManager.AddEvent(SocketStatusCMD.Connect, new NetBuffer());
     }
     #endregion
 
@@ -174,10 +174,10 @@ public class SocketClient : MonoBehaviour
         ms.Close();
         ms.Dispose();
 
-        NetByteBuffer temp = new NetByteBuffer(message);
+        NetBuffer temp = new NetBuffer(message);
         ushort cmd = temp.ReadShort();
         byte[] buf = temp.ReadRemaining();
-        SocketClientManager.AddEvent(cmd.ToString(), new NetByteBuffer(buf));
+        SocketClientManager.AddEvent(cmd.ToString(), new NetBuffer(buf));
     }
     #endregion
 
@@ -237,7 +237,7 @@ public class SocketClient : MonoBehaviour
         string protocal = dis == DisconnectType.System ?
         SocketStatusCMD.Exception : SocketStatusCMD.Disconnect;
 
-        NetByteBuffer buffer = new NetByteBuffer();
+        NetBuffer buffer = new NetBuffer();
         buffer.WriteString(protocal);
         SocketClientManager.AddEvent(protocal, buffer);
         DebugConsole.LogError("Disconnected :>" + msg + " DisconnectType:>" + dis);

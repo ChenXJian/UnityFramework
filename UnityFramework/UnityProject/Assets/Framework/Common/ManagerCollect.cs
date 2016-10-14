@@ -8,18 +8,6 @@ public class ManagerCollect : TSingleton<ManagerCollect>
     ManagerCollect() { }
 
     static Dictionary<string, object> m_Managers = new Dictionary<string, object>();
-    static GameObject _mainUpdate;
-
-    /// <summary>
-    /// 添加System管理器
-    /// </summary>
-    public void AddManager(string typeName, object obj)
-    {
-        if (!m_Managers.ContainsKey(typeName))
-        {
-            m_Managers.Add(typeName, obj);
-        }
-    }
 
     /// <summary>
     /// 添加UnityEngine管理器
@@ -32,7 +20,7 @@ public class ManagerCollect : TSingleton<ManagerCollect>
         {
             return (T)result;
         }
-        Component c = Global.MainUpdate.gameObject.AddComponent<T>();
+        Component c = Global.MainTick.gameObject.AddComponent<T>();
         m_Managers.Add(typeName, c);
         return default(T);
     }

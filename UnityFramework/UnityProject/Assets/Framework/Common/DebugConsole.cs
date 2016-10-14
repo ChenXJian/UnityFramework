@@ -13,6 +13,7 @@ public class DebugConsole : MonoBehaviour
 
     void Awake()
     {
+        
         if (__instance == null)
         {
             __instance = this;

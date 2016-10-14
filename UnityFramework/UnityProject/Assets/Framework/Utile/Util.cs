@@ -28,22 +28,6 @@ public class Util : MonoBehaviour
     }
 
     /// <summary>
-    /// 取Model 不能使用再脚本程序中
-    /// </summary>
-    /// <param name="size"></param>
-    /// <returns></returns>
-    public static T GetModel<T>() where T : ModelBase
-    {
-        if (Global.ModelManager.GetModel<T>() == null)
-        {
-            //TODO: 错误信息输出
-            DebugConsole.LogError("GetModelError:" );
-        }
-
-        return Global.ModelManager.GetModel<T>();
-    }
-
-    /// <summary>
     /// 取当前时间
     /// </summary>
     static DateTime ms_date_1970 = new DateTime(1970, 1, 1);
@@ -70,6 +54,38 @@ public class Util : MonoBehaviour
     }
 
     /// <summary>
+    /// 0-60分钟内，显示xx分钟之前；其中0-2分钟显示1分钟之前，2-3分钟显示2分钟之前，59-60分钟显示59分钟之前。以此类推。
+    /// 1-24小时内，显示xx小时之前；
+    /// 1-2天内，显示1天之前；
+    /// 2天以前，显示具体日期。
+    /// </summary>
+    /// <param name="time"></param>
+    /// <returns></returns>
+    public static string ShowTime(int serlverTimestamp, int time)
+    {
+        int deta = serlverTimestamp - time;
+        int minute = (deta / 60) % 60 + 1;
+        int hour = deta / (60 * 60);
+        int day = deta / (60 * 60 * 24);
+        string result = "";
+        if (day == 0)
+            result = hour == 0 ? string.Format("{0}分钟前", minute) : string.Format("{0}小时前", hour);
+        else if (day <= 2)
+            result = string.Format("{0}天前", day);
+        else
+            result = GetTime(time.ToString()).ToString("yyyy-MM-dd HH:mm:ss");
+
+        return result;
+    }
+
+    public static DateTime GetTime(string timeStamp)
+    {
+        DateTime dtStart = TimeZone.CurrentTimeZone.ToLocalTime(ms_date_1970);
+        long lTime = long.Parse(timeStamp + "0000000");
+        TimeSpan toNow = new TimeSpan(lTime); return dtStart.Add(toNow);
+    }
+
+    /// <summary>
     /// new 一个新对象
     /// </summary>
     public static GameObject NewObject(string name, GameObject rParent)
@@ -87,9 +103,9 @@ public class Util : MonoBehaviour
     /// </summary>
     public static void DelayCall(float rTime, UnityEngine.Events.UnityAction rFunc)
     {
-        Global.CoroutineManager.StartTask(OnDelayCall(rTime, rFunc));
-
+        Global.TaskManager.StartTask(OnDelayCall(rTime, rFunc));
     }
+
     /// <summary>
     /// 回调协程
     /// </summary>
@@ -132,33 +148,6 @@ public class Util : MonoBehaviour
         System.Security.Cryptography.MD5 md5 = new System.Security.Cryptography.MD5CryptoServiceProvider();
         string ret = BitConverter.ToString(md5.ComputeHash(System.Text.Encoding.UTF8.GetBytes(str)), 4, 8);
         return ret.Replace("-", "");
-    }
-
-    /// <summary>
-    /// 调用脚本成员函数
-    /// </summary>
-    public static object CallScriptFunction(object rObj, string rTypeName, string rFuncName, params object[] rArgs)
-    {
-        var rName = rTypeName.Replace("(Clone)", "");
-        return Global.ScriptManager.CallScriptMethod(rObj, rName, rFuncName, rArgs);
-    }
-
-    /// <summary>
-    /// 调用脚本静态函数
-    /// </summary>
-    public static object CallScriptFunctionStatic(string rTypeName, string rFuncName, params object[] rArgs)
-    {
-        var rName = rTypeName.Replace("(Clone)", "");
-        return Global.ScriptManager.CallScriptMethodStatic(rName, rFuncName, rArgs);
-    }
-
-    /// <summary>
-    /// 创建脚本对象
-    /// </summary>
-    public static object CreateScriptObject(string rTypeName, params object[] rArgs)
-    {
-        var rName = rTypeName.Replace("(Clone)", "");
-        return Global.ScriptManager.CreateScriptObject(rName, rArgs);
     }
 
     /// <summary>
@@ -222,6 +211,7 @@ public class Util : MonoBehaviour
         
         return null;
     }
+
     /// <summary>
     /// 添加组件
     /// </summary>
@@ -340,34 +330,21 @@ public class Util : MonoBehaviour
         }
 
     }
-    /// <summary>
-    /// 0-60分钟内，显示xx分钟之前；其中0-2分钟显示1分钟之前，2-3分钟显示2分钟之前，59-60分钟显示59分钟之前。以此类推。
-    /// 1-24小时内，显示xx小时之前；
-    /// 1-2天内，显示1天之前；
-    /// 2天以前，显示具体日期。
-    /// </summary>
-    /// <param name="time"></param>
-    /// <returns></returns>
-    public static string ShowTime(int serlverTimestamp, int time)
-    {
-        int deta = serlverTimestamp - time;
-        int minute = (deta / 60) % 60 + 1;
-        int hour = deta / (60 * 60);
-        int day = deta / (60 * 60 * 24);
-        string result = "";
-        if (day == 0)
-            result = hour == 0 ? string.Format("{0}分钟前", minute) : string.Format("{0}小时前", hour);
-        else if (day <= 2)
-            result = string.Format("{0}天前", day);
-        else
-            result = GetTime(time.ToString()).ToString("yyyy-MM-dd HH:mm:ss");
 
-        return result;
-    }
-    public static DateTime GetTime(string timeStamp)
+    public static bool IsNetReachable
     {
-        DateTime dtStart = TimeZone.CurrentTimeZone.ToLocalTime(ms_date_1970);
-        long lTime = long.Parse(timeStamp + "0000000");
-        TimeSpan toNow = new TimeSpan(lTime); return dtStart.Add(toNow);
+        get
+        {
+            return Application.internetReachability != NetworkReachability.NotReachable;
+        }
     }
+
+    public static bool IsWIFIMode
+    {
+        get
+        {
+            return Application.internetReachability == NetworkReachability.ReachableViaLocalAreaNetwork;
+        }
+    }
+
 }

@@ -38,13 +38,13 @@ namespace HotFixCode
 
         void TestPanelChange()
         {
-            Global.PanelManager.PushPanel(LogicName.SampleTwo);
+            PanelStack.Instance.PushPanel(LogicName.SampleTwo);
         }
 
         void TestWaitingLayer()
         {
             WaitingLayer.Show();
-            Global.CoroutineManager.StartTask(WaitingLayerEnumerator());
+            Global.TaskManager.StartTask(WaitingLayerEnumerator());
         }
 
         void TestDialogBox()
@@ -59,7 +59,7 @@ namespace HotFixCode
 
         void TestCroutine()
         {
-            Global.CoroutineManager.StartTask(CroutineEnumerator());
+            Global.TaskManager.StartTask(CroutineEnumerator());
         }
 
         IEnumerator CroutineEnumerator()
@@ -92,7 +92,7 @@ namespace HotFixCode
         {
             base.OnCreated(rGo);
 
-            panel = behaviour._scriptObject as SamplePanel;
+            panel = behaviour.GetLShapObject() as SamplePanel;
             panel.logic = this;
 
             behaviour.AddClick(panel.buttonDialog.gameObject, OnClick);

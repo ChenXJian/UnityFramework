@@ -24,7 +24,7 @@ namespace HotFixCode
         #region Example code
         void TestPanelBack()
         {
-            Global.PanelManager.PopPanel();
+            PanelStack.Instance.PopPanel();
         }
 
         #endregion
@@ -41,7 +41,7 @@ namespace HotFixCode
         {
             base.OnCreated(rGo);
 
-            panel = behaviour._scriptObject as SampleTwoPanel;
+            panel = behaviour.GetLShapObject() as SampleTwoPanel;
             panel.logic = this;
 
             behaviour.AddClick(panel.buttonBack.gameObject, OnClick);

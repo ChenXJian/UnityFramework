@@ -2,31 +2,31 @@
 using System.Collections;
 using System.IO;
 
-public class ResourcesUpdateManager : MonoBehaviour
+public class AssetsUpdater
 {
-    System.Action OnResourceUpdateComplete;
+    static System.Action OnAssetsUpdateComplete;
 
-    public void ResourceUpdateStart(System.Action func)
+    public static void Run(System.Action func)
     {
         LoadingLayer.Show();
         if (func != null)
         {
-            OnResourceUpdateComplete = func;
+            OnAssetsUpdateComplete = func;
         }
-        CheckExtractResource();
+        CheckUnpackAssets();
     }
 
-    void ResourceUpdateEnd()
+    static void AssetsUpdateEnd()
     {
-        if (OnResourceUpdateComplete != null)
+        if (OnAssetsUpdateComplete != null)
         {
-            OnResourceUpdateComplete.Invoke();
-            OnResourceUpdateComplete = null;
+            OnAssetsUpdateComplete.Invoke();
+            OnAssetsUpdateComplete = null;
         }
         LoadingLayer.SetProgressbarTips("资源解包完成，准备初始化");
     }
 
-    void CheckExtractResource()
+    static void CheckUnpackAssets()
     {
         //首次运行时解包资源
         bool needExtracted = true;
@@ -40,16 +40,16 @@ public class ResourcesUpdateManager : MonoBehaviour
         if (needExtracted && Global.IsSandboxMode) // 不为沙盒模式，则不需要解包，直接取Streaming
         {
             //需要解包，那么先解包，再更新
-            StartCoroutine(OnExtractResource());
+            Global.TaskManager.StartTask(OnUnpackAssets());
         }
         else
         {
             //不需要解包，直接更新
-            StartCoroutine(OnUpdatePackage());
+            Global.TaskManager.StartTask(OnUpdatePackage());
         }
     }
 
-    IEnumerator OnExtractResource()
+    static IEnumerator OnUnpackAssets()
     {
         LoadingLayer.SetProgressbarTips("开始解包资源");
 
@@ -206,15 +206,15 @@ public class ResourcesUpdateManager : MonoBehaviour
         LoadingLayer.SetProgressbarTips("解包资源文件完成");
         yield return new WaitForSeconds(0.1f);
 
-        StartCoroutine(OnUpdatePackage());
+        Global.TaskManager.StartTask(OnUpdatePackage());
     }
 
 
-    IEnumerator OnUpdatePackage()
+    static IEnumerator OnUpdatePackage()
     {
         if (!Global.IsUpdateMode)
         {
-            ResourceUpdateEnd();
+            AssetsUpdateEnd();
             yield break;
         }
 
@@ -319,6 +319,6 @@ public class ResourcesUpdateManager : MonoBehaviour
         LoadingLayer.SetProgressbarTips("更新资源完成");
         yield return new WaitForEndOfFrame();
 
-        ResourceUpdateEnd();
+        AssetsUpdateEnd();
     }
 }

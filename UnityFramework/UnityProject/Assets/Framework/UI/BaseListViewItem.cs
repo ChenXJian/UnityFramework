@@ -12,7 +12,7 @@ public class BaseListViewItem : MonoBehaviour
     /// 点击事件监听者
     /// </summary>
     [HideInInspector]
-    public UIEventListenerBasic listener = null;
+    public UIEventListener listener = null;
     /// <summary>
     /// 根据background 设置宽 
     /// </summary>
@@ -38,7 +38,7 @@ public class BaseListViewItem : MonoBehaviour
         background = GetComponent<Image>();
         this.width = this.GetComponent<Image>().sprite.rect.width;
         this.height = this.GetComponent<Image>().sprite.rect.height;
-        this.listener = UIEventListenerBasic.Get(this.background.gameObject);
+        this.listener = UIEventListener.Get(this.background.gameObject);
     }
 
 }

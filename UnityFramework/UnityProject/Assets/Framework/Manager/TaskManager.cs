@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine.Events;
 
-public class CoroutineManager : MonoBehaviour
+public class TaskManager : MonoBehaviour
 {
     public void Initialize() { }
 
@@ -47,7 +47,7 @@ public class CoroutineManager : MonoBehaviour
 		public void Start()  
 		{  
 			running = true;
-            Global.CoroutineManager.StartCoroutine(CallWrapper());  
+            Global.TaskManager.StartCoroutine(CallWrapper());  
 		}  
 		
 		public void Stop()  

@@ -14,7 +14,7 @@ namespace HotFixCode
         }
 
         /// <summary>
-        /// 从宿主程序中获得的基类
+        /// 从原生C#中获得的基类
         /// </summary>
         public PopupsBehaviour basePopups = null;
 
@@ -40,21 +40,11 @@ namespace HotFixCode
             }
         }
 
+        public virtual void OnAnimateInEnd() { }
 
-        public virtual void OnAnimateInEnd()
-        {
-            Debug.Log("OnAnimateInEnd");
-        }
+        public virtual void OnAnimateOutEnd() { }
 
-        public virtual void OnAnimateOutEnd()
-        {
-            Debug.Log("OnAnimateOutEnd");
-        }
-
-        public virtual void OnReturnCache()
-        {
-            Debug.Log("OnReturnCache");
-        }
+        public virtual void OnReturnCache() { }
 
     }
 }

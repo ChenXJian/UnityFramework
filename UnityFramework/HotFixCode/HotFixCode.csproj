@@ -47,7 +47,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Code\Common\GameDef.cs" />
+    <Compile Include="Code\Common\UI\UIDef.cs" />
     <Compile Include="Code\Common\UI\UILogic.cs" />
     <Compile Include="Code\Common\GameInstance.cs" />
     <Compile Include="Code\Common\UI\UIPopups.cs" />

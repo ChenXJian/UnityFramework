@@ -4,10 +4,9 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using System;
 
-public class ScriptBehaviour : MonoBehaviour
+public class LShapBehaviour : MonoBehaviour
 {
-    public object _scriptObject;
-    private List<Action<GameObject>> clickEvents = new List<Action<GameObject>>();
+    object lShapObject;
 
     bool isNeedStart = false;
     bool isNeedUpdate = false;
@@ -25,19 +24,19 @@ public class ScriptBehaviour : MonoBehaviour
     {
         CLRSharp.ICLRType rType = null;
         var rName = name.Replace("(Clone)", "");
-        bool rGot = Global.ScriptManager.TryGetType(rName, out rType);
+        bool rGot = LShapClient.Instance.TryGetType(rName, out rType);
 
         if(rGot)
         {
-            if (_scriptObject == null)
+            if (lShapObject == null)
             {
-                _scriptObject = Global.ScriptManager.CreateScriptObject(rType);
+                SetLShapObject(LShapClient.Instance.CreateScriptObject(rType));
             }
-            isNeedStart = Global.ScriptManager.CheckExistMethod(rType, startName);
-            isNeedUpdate = Global.ScriptManager.CheckExistMethod(rType, updateName);
-            isNeedLateUpdate = Global.ScriptManager.CheckExistMethod(rType, lateUpdateName);
-            isNeedFixedUpdate = Global.ScriptManager.CheckExistMethod(rType, fixedUpdateName);
-            isNeedOnDestroy = Global.ScriptManager.CheckExistMethod(rType, onDestroyName);
+            isNeedStart = LShapClient.Instance.CheckExistMethod(rType, startName);
+            isNeedUpdate = LShapClient.Instance.CheckExistMethod(rType, updateName);
+            isNeedLateUpdate = LShapClient.Instance.CheckExistMethod(rType, lateUpdateName);
+            isNeedFixedUpdate = LShapClient.Instance.CheckExistMethod(rType, fixedUpdateName);
+            isNeedOnDestroy = LShapClient.Instance.CheckExistMethod(rType, onDestroyName);
             CallMethod("Awake", gameObject);
         }
         else
@@ -71,18 +70,31 @@ public class ScriptBehaviour : MonoBehaviour
     protected virtual void OnDestroy()
     {
         if (isNeedOnDestroy) CallMethod("OnDestroy");
-        ClearClick();
-        _scriptObject = null;
-        Debug.Log("~" + name + " was destroy!");
-
-        Global.AssetLoadManager.UnloadUIPanel(name);
+        lShapObject = null;
+        if(name.Contains("Panel")) Global.AssetLoadManager.UnloadUIPanel(name);
     }
 
+    public object GetLShapObject()
+    {
+        if(lShapObject ==  null)
+        {
+            DebugConsole.LogError("Get LShapObject is null:" + name);
+        }
+        return lShapObject;
+    }
+
+    public void SetLShapObject(object lObject)
+    {
+        if (lObject == null)
+        {
+            DebugConsole.LogError("Set LShapObject is null:" + name);
+        }
+        lShapObject = lObject;
+    }
 
     public void AddClick(GameObject rGo, Action<GameObject> func)
     {
         if (rGo == null) return;
-        clickEvents.Add(func);
         rGo.GetComponent<Button>().onClick.AddListener(
             delegate 
             {
@@ -90,6 +102,7 @@ public class ScriptBehaviour : MonoBehaviour
             }
         );
     }
+
     public void AddToggleValueChange(GameObject rGo, Action<bool> func)
     {
         if (rGo == null) return;
@@ -99,24 +112,13 @@ public class ScriptBehaviour : MonoBehaviour
         {
             func(isOn);
         });
-
-    }
-    public void ClearClick()
-    {
-        for (int i = 0; i < clickEvents.Count; i++)
-        {
-            if (clickEvents[i] != null)
-            {
-                clickEvents[i]= null;
-            }
-        }
     }
 
     protected object CallMethod(string rFuncName, params object[] args)
     {
-        if (_scriptObject == null)
+        if (lShapObject == null)
             Debug.LogError("not have object invoke member function");
 
-        return Util.CallScriptFunction(_scriptObject, name, rFuncName, args);
+        return LShapUtil.CallScriptFunction(lShapObject, name, rFuncName, args);
     }
 }

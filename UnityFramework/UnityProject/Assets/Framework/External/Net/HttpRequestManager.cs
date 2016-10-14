@@ -19,13 +19,6 @@ public class HttpRequestManager : MonoBehaviour
         }
     }
 
-    public HttpRequestSignin Login(string account, string password, string serverID)
-    {
-        var req = HttpRequestPool.gameObject.AddComponent<HttpRequestSignin>();
-        req.Login(account, password, serverID);
-        return req;
-    }
-
     public HttpRequestSignin CreateAccount(string account, string password)
     {
         var req = HttpRequestPool.gameObject.AddComponent<HttpRequestSignin>();

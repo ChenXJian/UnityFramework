@@ -18,6 +18,16 @@ using SenderTable = System.Collections.Generic.Dictionary<object, System.Collect
 /// notificationName的定义，目前定义在NoticeGeneralName，特殊类型通知另行定义
 /// </summary>
 
+
+/// <summary>
+/// General通知名
+/// </summary>
+public class NoticeName
+{
+    public const string Test = "General_Test";
+}
+
+
 public class NotificationCenter : TSingleton<NotificationCenter>
 {
     private Dictionary<string, SenderTable> _table = new Dictionary<string, SenderTable>();

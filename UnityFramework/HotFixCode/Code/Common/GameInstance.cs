@@ -21,7 +21,7 @@ namespace HotFixCode
             }
         }
 
-        CoroutineManager.Task HeartbeatTask = null;
+        TaskManager.Task HeartbeatTask = null;
 
         void Init()
         {
@@ -33,7 +33,7 @@ namespace HotFixCode
         void Start()
         {
             LoadingLayer.Hide();
-            Global.PanelManager.PushPanel(LogicName.Sample);
+            PanelStack.Instance.PushPanel(LogicName.Sample);
         }
 
         void End()
@@ -56,12 +56,12 @@ namespace HotFixCode
         {
             if (HeartbeatTask == null)
             {
-                HeartbeatTask = Global.CoroutineManager.StartTask(SendHeartbeat());
+                HeartbeatTask = Global.TaskManager.StartTask(SendHeartbeat());
             }
             else
             {
                 HeartbeatTask.Stop();
-                HeartbeatTask = Global.CoroutineManager.StartTask(SendHeartbeat());
+                HeartbeatTask = Global.TaskManager.StartTask(SendHeartbeat());
             }
         }
 

@@ -18,7 +18,7 @@ public class PopupsManager : TSingleton<PopupsManager>
     /// </summary>
     public T ShowPopups<T>(string popupsName, bool modal = true)
     {
-        var popups = (T)(Template(popupsName)._scriptObject);
+        var popups = (T)(Template(popupsName).GetLShapObject());
         if (popups == null)
         {
             DebugConsole.LogError("popups not find :" + popupsName);
@@ -26,7 +26,7 @@ public class PopupsManager : TSingleton<PopupsManager>
         }
         else
         {
-            Util.CallScriptFunction(popups, popupsName, "Show", modal);
+            LShapUtil.CallScriptFunction(popups, popupsName, "Show", modal);
         }
         return popups;
     }
@@ -43,7 +43,7 @@ public class PopupsManager : TSingleton<PopupsManager>
         }
         else
         {
-            Util.CallScriptFunction(popups, popupsName, "Hide");
+            LShapUtil.CallScriptFunction(popups, popupsName, "Hide");
         }
     }
 
@@ -52,7 +52,7 @@ public class PopupsManager : TSingleton<PopupsManager>
     /// </summary>
     public T GetPopups<T>(string popupsName)
     {
-        var popups = (T)(Template(popupsName)._scriptObject);
+        var popups = (T)(Template(popupsName).GetLShapObject());
         return popups;
     }
 
@@ -74,7 +74,7 @@ public class PopupsManager : TSingleton<PopupsManager>
     public void OnCreatedDuplicate(PopupsBehaviour duplicate)
     {
         duplicate.transform.SetParent(Global.PopupsWindow, false);
-        duplicate._scriptObject = Util.CreateScriptObject(duplicate.TemplateName, duplicate);
+        duplicate.SetLShapObject(LShapUtil.CreateScriptObject(duplicate.TemplateName, duplicate));
     }
 
 }

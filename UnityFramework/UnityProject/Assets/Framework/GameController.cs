@@ -16,7 +16,7 @@ public class GameController : MonoBehaviour
         {
             if(null == _instance)
             {
-                string rName = "MainUpdate";
+                string rName = "MainTick";
                 GameObject main = GameObject.Find(rName);
                 if (main == null)
                 {
@@ -40,10 +40,6 @@ public class GameController : MonoBehaviour
         {
             onStartupFunc = onComplete;
         }
-        else 
-        {
-            DebugConsole.Log("未设置游戏启动函数");
-        }
 
         //取消 Destroy 对象 
         DontDestroyOnLoad(gameObject);
@@ -61,22 +57,17 @@ public class GameController : MonoBehaviour
         UnityEngine.QualitySettings.vSyncCount = Global.VSyncCount;
 
         //挂载管理器并初始化
-        ManagerCollect.Instance.AddManager(ManagerName.Script, ScriptManager.Instance);
-        ManagerCollect.Instance.AddManager(ManagerName.Panel, PanelManager.Instance);
-        ManagerCollect.Instance.AddManager(ManagerName.Popups, PopupsManager.Instance);
-
-        ManagerCollect.Instance.AddManager<ResourcesUpdateManager>(ManagerName.ResourcesUpdate);
-        ManagerCollect.Instance.AddManager<CoroutineManager>(ManagerName.Coroutine);
-        ManagerCollect.Instance.AddManager<TimerManager>(ManagerName.Timer);
-        ManagerCollect.Instance.AddManager<AssetLoadManager>(ManagerName.Asset);
-        ManagerCollect.Instance.AddManager<SceneLoadManager>(ManagerName.Scene);
-        ManagerCollect.Instance.AddManager<MusicManager>(ManagerName.Music);
+        ManagerCollect.Instance.AddManager<TaskManager>(ManagerName.Task);
+        ManagerCollect.Instance.AddManager<AssetLoadManager>(ManagerName.AssetLoad);
+        ManagerCollect.Instance.AddManager<SoundManager>(ManagerName.Sound);
         ManagerCollect.Instance.AddManager<GestureManager>(ManagerName.Gesture);
+
+        Global.SoundManager.Initialize();
 
         //创建运行时资源目录
         FileUtil.CreateFolder(AppPlatform.RuntimeAssetsPath);
 
-        Global.ResourcesUpdateManager.ResourceUpdateStart(() =>
+        AssetsUpdater.Run(() =>
         {
             LoadAssetbundleManifest();
         });
@@ -183,7 +174,7 @@ public class GameController : MonoBehaviour
     /// </summary>
     void GameEnd()
     {
-        Util.CallScriptFunction(scriptGameInstance, "GameInstance", "End");
+        LShapUtil.CallScriptFunction(scriptGameInstance, "GameInstance", "End");
         scriptGameInstance = null;
         Global.AssetLoadManager.UnloadAssetBundles();
         UIUtil.ClearUICache();
@@ -200,19 +191,19 @@ public class GameController : MonoBehaviour
     void Update()
     {
         if (scriptGameInstance != null)
-            Util.CallScriptFunction(scriptGameInstance, "GameInstance", "Update");
+            LShapUtil.CallScriptFunction(scriptGameInstance, "GameInstance", "Update");
     }
 
     void FixedUpdate()
     {
         if (scriptGameInstance != null)
-            Util.CallScriptFunction(scriptGameInstance, "GameInstance", "FixedUpdate");
+            LShapUtil.CallScriptFunction(scriptGameInstance, "GameInstance", "FixedUpdate");
     }
 
     void LateUpdate()
     {
         if (scriptGameInstance != null)
-            Util.CallScriptFunction(scriptGameInstance, "GameInstance", "LateUpdate");
+            LShapUtil.CallScriptFunction(scriptGameInstance, "GameInstance", "LateUpdate");
     }
 
 }

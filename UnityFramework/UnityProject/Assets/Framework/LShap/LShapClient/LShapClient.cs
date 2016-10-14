@@ -1,14 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ScriptManager : TSingleton<ScriptManager> 
+public class LShapClient : TSingleton<LShapClient> 
 {
     static CLRSharp.CLRSharp_Environment env;
     static CLRSharp.ThreadContext context;
 
     public bool IsScriptInited { set; get; }
 
-    ScriptManager() { IsScriptInited = false; }
+    LShapClient() { IsScriptInited = false; }
 
     public void Initialize()
     {

@@ -5,19 +5,19 @@ using System.Text;
 using System;
 
 
-public class NetByteBuffer :IDisposable
+public class NetBuffer :IDisposable
 {
     public MemoryStream stream = null;
     BinaryWriter writer = null;
     BinaryReader reader = null;
 
-    public NetByteBuffer() 
+    public NetBuffer() 
     {
         stream = new MemoryStream();
         writer = new BinaryWriter(stream, Encoding.UTF8);
     }
 
-    public NetByteBuffer(byte[] data)
+    public NetBuffer(byte[] data)
     {
         if (data != null)
         {
@@ -31,7 +31,7 @@ public class NetByteBuffer :IDisposable
         }
     }
 
-    ~NetByteBuffer()
+    ~NetBuffer()
     {
         Dispose();
     }

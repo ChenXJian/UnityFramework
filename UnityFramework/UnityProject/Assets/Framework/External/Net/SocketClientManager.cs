@@ -9,9 +9,9 @@ using UnityEngine.Events;
 
 public class ReceiveEventArgs : EventArgs
 {
-    public NetByteBuffer buf { get; set; }
+    public NetBuffer buf { get; set; }
 
-    public ReceiveEventArgs(NetByteBuffer rBuf)
+    public ReceiveEventArgs(NetBuffer rBuf)
     {
         this.buf = rBuf;
     }
@@ -33,7 +33,7 @@ public class SocketClientManager : MonoBehaviour
 
         while (_respondQueue.Count > 0)
         {
-            KeyValuePair<string, NetByteBuffer> eve = _respondQueue.Dequeue();
+            KeyValuePair<string, NetBuffer> eve = _respondQueue.Dequeue();
 
             if (eve.Key == SocketStatusCMD.Connect) OnConnect();
             else if (eve.Key == SocketStatusCMD.Exception) OnException();
@@ -55,16 +55,16 @@ public class SocketClientManager : MonoBehaviour
 
     public UnityAction OnConnectedTCP;
 
-    private static Queue<KeyValuePair<string, NetByteBuffer>> _respondQueue = new Queue<KeyValuePair<string, NetByteBuffer>>();
+    private static Queue<KeyValuePair<string, NetBuffer>> _respondQueue = new Queue<KeyValuePair<string, NetBuffer>>();
 
-    public static void AddEvent(string _event, NetByteBuffer data)
+    public static void AddEvent(string _event, NetBuffer data)
     {
-        _respondQueue.Enqueue(new KeyValuePair<string, NetByteBuffer>(_event, data));
+        _respondQueue.Enqueue(new KeyValuePair<string, NetBuffer>(_event, data));
     }
 
-    public void SendMessageTCP(SocketMessageCMD rCMD, NetByteBuffer rBuffer)
+    public void SendMessageTCP(SocketMessageCMD rCMD, NetBuffer rBuffer)
     {
-        NetByteBuffer buf = new NetByteBuffer();
+        NetBuffer buf = new NetBuffer();
         buf.WriteShort((UInt16)rCMD);
         buf.WriteBytes(rBuffer.ToBytes());
         SocketClient.SendMessageTCP(buf);

@@ -13,10 +13,10 @@ namespace HotFixCode
     {
         protected GameObject gameObject;
         protected Transform transform;
-        protected ScriptBehaviour behaviour;
+        protected LShapBehaviour behaviour;
 
         /// <summary>
-        /// 被宿主程序启动
+        /// 被原生C#启动
         /// </summary>
         /// <param name="parent">要挂载的UI Window</param>
         protected virtual void Startup(RectTransform parent)
@@ -25,7 +25,7 @@ namespace HotFixCode
         }
 
         /// <summary>
-        /// 供宿主程序创建面板后调用的回调
+        /// 面板加载完成后的回调
         /// </summary>
         /// <param name="rGo">回传的面板对象</param>
         protected virtual void OnCreated(GameObject rGo)
@@ -33,17 +33,17 @@ namespace HotFixCode
             WaitingLayer.Hide();
             gameObject = rGo;
             transform = rGo.GetComponent<Transform>();
-            behaviour = rGo.GetComponent<ScriptBehaviour>();
+            behaviour = rGo.GetComponent<LShapBehaviour>();
 
-            var rPanel = Global.PanelManager.PanelCurrent;
+            var rPanel = PanelStack.Instance.PanelCurrent;
             if (gameObject.name.Contains(rPanel.PanelName))
             {
                 rPanel.IsCreated = true;
-                Debug.Log("[script match complete]:" + gameObject.name);
+                DebugConsole.Log("[script match complete]:" + gameObject.name);
             }
             else
             {
-                Debug.Log("[script match failed]:" + gameObject.name);
+                DebugConsole.Log("[script match failed]:" + gameObject.name);
             }
         }
 
@@ -74,7 +74,7 @@ namespace HotFixCode
             Disable();
             if (gameObject != null)
             {
-                Global.PopupsManager.ClearCache();
+                PopupsManager.Instance.ClearCache();
                 GameObject.Destroy(gameObject);
             }
         }
