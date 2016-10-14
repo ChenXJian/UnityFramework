@@ -26,7 +26,6 @@ public class Launcher : MonoBehaviour
         var scriptGI = LShapUtil.CallScriptFunctionStatic("main", "GetGameInstance");
         Global.GameController.SetScriptGameInstance(scriptGI);
         LShapUtil.CallScriptFunction(scriptGI, "GameInstance", "Init");
-        DestroyObject(this);
-        DestroyObject(gameObject);
+        Destroy(gameObject);
     }
 }
