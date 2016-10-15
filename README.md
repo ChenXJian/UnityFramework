@@ -16,7 +16,6 @@ UnityFramework或参考设计思路，或直接代码引用了以下开源项目
 * L#
 * SimpleFramework
 * UIWidget
-* DOTween
 * TsiU
 
 ## 支持功能
