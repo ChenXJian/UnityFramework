@@ -8,5 +8,3 @@
 [DownloadAssetBundle]:file:///E:/UnityFramework/UnityFramework/UnityProject/Assets/StreamingAssets/Package_Windows/AssetBundles/localization.bundle
 [DownloadAssetBundle]:file:///E:/UnityFramework/UnityFramework/UnityProject/Assets/StreamingAssets/Package_Windows/AssetBundles/ui/samplepanel.bundle
 [script match complete]:SamplePanel
-[DownloadAssetBundle]:file:///E:/UnityFramework/UnityFramework/UnityProject/Assets/StreamingAssets/Package_Windows/AssetBundles/ui/sampletwopanel.bundle
-[script match complete]:SampleTwoPanel

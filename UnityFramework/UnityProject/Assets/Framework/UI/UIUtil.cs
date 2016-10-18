@@ -9,22 +9,44 @@ public class UIUtil : MonoBehaviour
     /// </summary>
     public static void CreateUI(string pfbName, Transform parent, UnityAction<GameObject> func)
     {
-        Global.AssetLoadManager.LoadUIPanel(pfbName, (prefab) =>
+        GameObject pfbCached = PanelStack.Instance.GetCachedPanel(pfbName);
+        if (pfbCached)
         {
-            GameObject go = GameObject.Instantiate(prefab) as GameObject;
-            if (go == null) return;
-            go.name = pfbName;
-            go.layer = LayerMask.NameToLayer("UI");
-            go.transform.SetParent(parent);
-            go.transform.localScale = Vector3.one;
-            go.transform.localPosition = Vector3.zero;
-            go.transform.localRotation = Quaternion.identity;
-            go.AddComponent<LShapBehaviour>();
+            GameObject goCached = GameObject.Instantiate(pfbCached) as GameObject;
+            if (goCached == null) return;
+            goCached.name = pfbName;
+            goCached.layer = LayerMask.NameToLayer("UI");
+            goCached.transform.SetParent(parent);
+            goCached.transform.localScale = Vector3.one;
+            goCached.transform.localPosition = Vector3.zero;
+            goCached.transform.localRotation = Quaternion.identity;
+            goCached.AddComponent<LShapBehaviour>();
             if (func != null)
             {
-                func(go);   //回传面板对象
+                func(goCached);   //回传面板对象
             }
-        });
+
+            PanelStack.Instance.RemoveCachePanel(pfbName);
+        }
+        else
+        {
+            Global.AssetLoadManager.LoadUIPanel(pfbName, (prefab) =>
+            {
+                GameObject go = GameObject.Instantiate(prefab) as GameObject;
+                if (go == null) return;
+                go.name = pfbName;
+                go.layer = LayerMask.NameToLayer("UI");
+                go.transform.SetParent(parent);
+                go.transform.localScale = Vector3.one;
+                go.transform.localPosition = Vector3.zero;
+                go.transform.localRotation = Quaternion.identity;
+                go.AddComponent<LShapBehaviour>();
+                if (func != null)
+                {
+                    func(go);   //回传面板对象
+                }
+            });
+        }
     }
 
     /// <summary>

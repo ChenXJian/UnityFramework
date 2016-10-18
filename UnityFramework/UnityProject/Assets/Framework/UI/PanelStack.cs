@@ -39,6 +39,7 @@ public class PanelStack : TSingleton<PanelStack>
 
 
     Stack<Panel> _panelStack = new Stack<Panel>();
+    Dictionary<string, GameObject> _panelCache = new Dictionary<string, GameObject>();
     Panel panelCur = new Panel();
     Transform rootNode;
 
@@ -86,6 +87,39 @@ public class PanelStack : TSingleton<PanelStack>
             if (item.LogicName == rLogicName) isExist = true;
         });
         return isExist;
+    }
+
+
+    public GameObject GetCachedPanel(string rPanelName)
+    {
+        if (_panelCache.ContainsKey(rPanelName))
+        {
+            return _panelCache[rPanelName];
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    public void AddCachePanel(string rPanelName)
+    {
+        Global.AssetLoadManager.LoadUIPanel(rPanelName, (prefab) =>
+        {
+            if (!_panelCache.ContainsKey(rPanelName))
+            {
+                _panelCache.Add(rPanelName, prefab);
+            }
+        });
+    }
+
+
+    public void RemoveCachePanel(string rPanelName)
+    {
+        if (_panelCache.ContainsKey(rPanelName))
+        {
+            _panelCache.Remove(rPanelName);
+        }
     }
 
     public Panel PushPanel(string rLogicName)
