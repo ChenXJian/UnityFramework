@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using LYNet;
 
 /// <summary>
 /// UI面板名
