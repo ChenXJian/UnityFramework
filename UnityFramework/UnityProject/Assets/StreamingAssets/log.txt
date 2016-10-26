@@ -1,10 +1,10 @@
-[DownloadAssetBundle]:file:///E:/UnityFramework/UnityFramework/UnityProject/Assets/StreamingAssets/Package_Windows/AssetBundles/AssetBundles
+[DownloadAssetBundle]:file:///D:/Projects/UnityFramework/UnityFramework/UnityProject/Assets/StreamingAssets/Package_Windows/AssetBundles/AssetBundles
 [Framework initialize complete]
 [Assetbundle prepare complete]
 [LShape initialize complete]
-[StreamingAssetsPath]：E:/UnityFramework/UnityFramework/UnityProject/Assets/StreamingAssets
-[RuntimeAssetsPath] :E:/UnityFramework/UnityFramework/UnityProject/Assets/StreamingAssets/
-[AssetBundleDictionaryUrl]:file:///E:/UnityFramework/UnityFramework/UnityProject/Assets/StreamingAssets/Package_Windows/AssetBundles/
-[DownloadAssetBundle]:file:///E:/UnityFramework/UnityFramework/UnityProject/Assets/StreamingAssets/Package_Windows/AssetBundles/localization.bundle
-[DownloadAssetBundle]:file:///E:/UnityFramework/UnityFramework/UnityProject/Assets/StreamingAssets/Package_Windows/AssetBundles/ui/samplepanel.bundle
+[StreamingAssetsPath]：D:/Projects/UnityFramework/UnityFramework/UnityProject/Assets/StreamingAssets
+[RuntimeAssetsPath] :D:/Projects/UnityFramework/UnityFramework/UnityProject/Assets/StreamingAssets/
+[AssetBundleDictionaryUrl]:file:///D:/Projects/UnityFramework/UnityFramework/UnityProject/Assets/StreamingAssets/Package_Windows/AssetBundles/
+[DownloadAssetBundle]:file:///D:/Projects/UnityFramework/UnityFramework/UnityProject/Assets/StreamingAssets/Package_Windows/AssetBundles/localization.bundle
+[DownloadAssetBundle]:file:///D:/Projects/UnityFramework/UnityFramework/UnityProject/Assets/StreamingAssets/Package_Windows/AssetBundles/ui/samplepanel.bundle
 [script match complete]:SamplePanel
