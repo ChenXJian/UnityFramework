@@ -8,12 +8,11 @@ public class SoundManager : MonoBehaviour
 
     private Hashtable sounds = new Hashtable();
 
-    public void Initialize()
+    void Awake()
     {
         this.audioSource = GetComponent<AudioSource>();
         if (audioSource == null)
         {
-           
             audioSource = gameObject.AddComponent<AudioSource>();
         }
     }

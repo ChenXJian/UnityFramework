@@ -62,8 +62,6 @@ public class GameController : MonoBehaviour
         ManagerCollect.Instance.AddManager<SoundManager>(ManagerName.Sound);
         ManagerCollect.Instance.AddManager<GestureManager>(ManagerName.Gesture);
 
-        Global.SoundManager.Initialize();
-
         //创建运行时资源目录
         FileUtil.CreateFolder(AppPlatform.RuntimeAssetsPath);
 
