@@ -64,11 +64,11 @@ public class SoundManager : MonoBehaviour
     }
 
     /// <summary>
-    /// ≤•∑≈“Ù∆µºÙº≠
+    /// ≤•∑≈“Ù–ß
     /// </summary>
-    public void Play(AudioClip clip, Vector3 position,float strenth = 1)
+    public void Play(string name)
     {
-        AudioSource.PlayClipAtPoint(clip, position, strenth);
+        AudioSource.PlayClipAtPoint(LoadAudioClip(name), new Vector3(), 1);
     }
 
     /// <summary>
