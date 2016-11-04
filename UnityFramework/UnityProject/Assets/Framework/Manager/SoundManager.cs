@@ -4,47 +4,51 @@ using System.Collections.Generic;
 
 public class SoundManager : MonoBehaviour 
 {
-    public AudioSource audioSource = null;
+    public AudioSource backsoundSource = null;
 
-    private Hashtable sounds = new Hashtable();
+    private Dictionary<string, AudioClip> clipCache = new Dictionary<string, AudioClip>();
+    private Dictionary<string, AudioSource> effectsounCache = new Dictionary<string, AudioSource>();
 
     void Awake()
     {
-        this.audioSource = GetComponent<AudioSource>();
-        if (audioSource == null)
+        this.backsoundSource = GetComponent<AudioSource>();
+        if (backsoundSource == null)
         {
-            audioSource = gameObject.AddComponent<AudioSource>();
+            backsoundSource = gameObject.AddComponent<AudioSource>();
+            gameObject.AddComponent<AudioListener>();
         }
     }
 
     /// <summary>
     /// 载入一个音频
     /// </summary>
-    public AudioClip LoadAudioClip(string path)
+    public AudioClip LoadAudioClip(string name)
     {
-        AudioClip ac = Get(path);
+
+        AudioClip ac = null;
+        clipCache.TryGetValue(name, out ac);
         if (ac == null)
         {
-            ac = (AudioClip)Resources.Load(path, typeof(AudioClip));
-            Add(path, ac);
+            ac = (AudioClip)Resources.Load("Sound/" + name, typeof(AudioClip));
+            if (ac != null) clipCache.Add(name, ac);
         }
+
         return ac;
     }
 
     /// <summary>
     /// 播放背景音乐
     /// </summary>
-    /// <param name="canPlay"></param>
-    public void PlayBacksound(string name, bool canPlay)
+    public void PlayBacksound(string name, bool canPlay = true)
     {
-        if (this.audioSource.clip != null)
+        if (this.backsoundSource.clip != null)
         {
-            if (name.IndexOf(this.audioSource.clip.name) > -1)
+            if (name.IndexOf(this.backsoundSource.clip.name) > -1)
             {
                 if (!canPlay)
                 {
-                    this.audioSource.Stop();
-                    this.audioSource.clip = null;
+                    this.backsoundSource.Stop();
+                    this.backsoundSource.clip = null;
                 }
                 return;
             }
@@ -52,42 +56,50 @@ public class SoundManager : MonoBehaviour
 
         if (canPlay)
         {
-            this.audioSource.loop = true;
-            this.audioSource.clip = LoadAudioClip(name);
-            this.audioSource.Play();
+            this.backsoundSource.loop = true;
+            this.backsoundSource.clip = LoadAudioClip(name);
+            this.backsoundSource.Play();
         }
         else
         {
-            this.audioSource.Stop();
-            this.audioSource.clip = null;
+            this.backsoundSource.Stop();
+            this.backsoundSource.clip = null;
         }
     }
 
     /// <summary>
     /// 播放音效
     /// </summary>
+    public void PlayEffectsound(string name)
+    {
+        if (effectsounCache.ContainsKey(name))
+        {
+            //杜绝重复播放
+            return;
+        }
+
+        GameObject gameObject = new GameObject("sound effect");
+        gameObject.transform.position = Vector3.zero;
+        AudioSource audioSource = (AudioSource)gameObject.AddComponent(typeof(AudioSource));
+
+        var clip = LoadAudioClip(name);
+        audioSource.clip = clip;
+        audioSource.spatialBlend = 1f;
+        audioSource.volume = 1;
+        audioSource.Play();
+        effectsounCache.Add(name, audioSource);
+
+        var clearTime = clip.length * ((Time.timeScale >= 0.01f) ? Time.timeScale : 0.01f);
+
+        Util.DelayCall(gameObject, clearTime, (go) =>
+        {
+            GameObject.Destroy(go as GameObject);
+            effectsounCache.Remove(name);
+        });
+    }
+
     public void Play(string name)
     {
         AudioSource.PlayClipAtPoint(LoadAudioClip(name), new Vector3(), 1);
-    }
-
-    /// <summary>
-    /// 添加一个声音
-    /// </summary>
-    private void Add(string key, AudioClip value)
-    {
-        if (sounds[key] != null || value == null)
-            return;
-        sounds.Add(key, value);
-    }
-
-    /// <summary>
-    /// 获取一个声音
-    /// </summary>
-    private AudioClip Get(string key)
-    {
-        if (sounds[key] == null)
-            return null;
-        return sounds[key] as AudioClip;
     }
 }

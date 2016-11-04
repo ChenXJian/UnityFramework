@@ -105,14 +105,17 @@ public class Util : MonoBehaviour
     {
         Global.TaskManager.StartTask(OnDelayCall(rTime, rFunc));
     }
-
-    /// <summary>
-    /// 回调协程
-    /// </summary>
+    public static void DelayCall(object obj, float rTime, UnityEngine.Events.UnityAction<object> rFunc)
+    {
+        Global.TaskManager.StartTask(OnDelayCall(obj, rTime, rFunc));
+    }
     private static System.Collections.IEnumerator OnDelayCall(float time, UnityEngine.Events.UnityAction rFunc)
     {
-        yield return new WaitForSeconds(time);
-        if (rFunc != null) rFunc();
+        yield return new WaitForSeconds(time); if (rFunc != null) rFunc();
+    }
+    private static System.Collections.IEnumerator OnDelayCall(object obj, float time, UnityEngine.Events.UnityAction<object> rFunc)
+    {
+        yield return new WaitForSeconds(time); if (rFunc != null) rFunc(obj);
     }
 
     /// <summary>
