@@ -37,7 +37,7 @@ public class GenerateCubemap : ScriptableWizard
         DestroyImmediate(go);
     }
 
-    [MenuItem("Tool/GenerateCubemap")]
+    [MenuItem("Tools/GenerateCubemap")]
     static void RenderCubemap()
     {
         ScriptableWizard.DisplayWizard("RenderCubemap", typeof(GenerateCubemap), "Render");
