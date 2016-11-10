@@ -23,7 +23,7 @@ public class UIUtil : MonoBehaviour
             goCached.AddComponent<LShapBehaviour>();
             if (func != null)
             {
-                func(goCached);   //回传面板对象
+                Util.DelayCallForEndOfFrame(() => { func(goCached); });
             }
 
             PanelStack.Instance.RemoveCachePanel(pfbName);
@@ -43,7 +43,7 @@ public class UIUtil : MonoBehaviour
                 go.AddComponent<LShapBehaviour>();
                 if (func != null)
                 {
-                    func(go);   //回传面板对象
+                    Util.DelayCallForEndOfFrame(() => { func(go); });
                 }
             });
         }

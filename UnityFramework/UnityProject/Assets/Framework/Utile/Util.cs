@@ -118,6 +118,24 @@ public class Util : MonoBehaviour
         yield return new WaitForSeconds(time); if (rFunc != null) rFunc(obj);
     }
 
+    //推迟到帧末尾执行
+    public static void DelayCallForEndOfFrame(UnityEngine.Events.UnityAction rFunc)
+    {
+        Global.TaskManager.StartTask(OnDelayCallEndOfFrame(rFunc));
+    }
+    private static System.Collections.IEnumerator OnDelayCallEndOfFrame(UnityEngine.Events.UnityAction rFunc)
+    {
+        yield return new WaitForEndOfFrame(); if (rFunc != null) rFunc();
+    }
+    public static void DelayCallForEndOfFrame(object obj, UnityEngine.Events.UnityAction<object> rFunc)
+    {
+        Global.TaskManager.StartTask(OnDelayCallEndOfFrame(obj, rFunc));
+    }
+    private static System.Collections.IEnumerator OnDelayCallEndOfFrame(object obj, UnityEngine.Events.UnityAction<object> rFunc)
+    {
+        yield return new WaitForEndOfFrame(); if (rFunc != null) rFunc(obj);
+    }
+
     /// <summary>
     /// 计算文件的MD5值
     /// </summary>
