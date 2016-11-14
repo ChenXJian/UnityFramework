@@ -14,6 +14,8 @@ namespace HotFixCode
         protected GameObject gameObject;
         protected Transform transform;
         protected LShapBehaviour behaviour;
+        protected UnityEngine.Events.UnityAction<object> OnEnable;
+
 
         /// <summary>
         /// 被原生C#启动
@@ -22,6 +24,12 @@ namespace HotFixCode
         protected virtual void Startup(RectTransform parent)
         {
             WaitingLayer.Show();
+        }
+
+        protected virtual void Startup(RectTransform parent, UnityEngine.Events.UnityAction<object> onEnable)
+        {
+            WaitingLayer.Show();
+            OnEnable = onEnable;
         }
 
         /// <summary>
@@ -55,6 +63,10 @@ namespace HotFixCode
             if (!gameObject) return;
             gameObject.SetActive(true);
             transform.SetAsLastSibling();
+            if (OnEnable != null)
+            {
+                OnEnable(this);
+            }
         }
 
         /// <summary>

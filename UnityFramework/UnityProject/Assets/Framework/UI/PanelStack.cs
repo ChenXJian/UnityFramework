@@ -122,7 +122,7 @@ public class PanelStack : TSingleton<PanelStack>
         }
     }
 
-    public Panel PushPanel(string rLogicName)
+    public Panel PushPanel(string rLogicName, UnityEngine.Events.UnityAction<object> onEnable = null)
     {
         if (panelCur != null && panelCur.LogicName != "Noting" && panelCur.PanelName != "Noting")
         {
@@ -160,8 +160,14 @@ public class PanelStack : TSingleton<PanelStack>
             _panelStack.Push(rNewPanel);
 
             panelCur = rNewPanel;
-            LShapUtil.CallScriptFunction(panelCur.LogicObject, panelCur.LogicName, startupName, RootNode);
-
+            if (onEnable != null)
+            {
+                LShapUtil.CallScriptFunction(panelCur.LogicObject, panelCur.LogicName, startupName, RootNode, onEnable);
+            }
+            else
+            {
+                LShapUtil.CallScriptFunction(panelCur.LogicObject, panelCur.LogicName, startupName, RootNode);
+            }
         }
         return panelCur;
     }
