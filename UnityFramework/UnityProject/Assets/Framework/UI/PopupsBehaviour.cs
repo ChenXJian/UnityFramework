@@ -46,11 +46,6 @@ public class PopupsBehaviour : LShapBehaviour, ITemplatable
 
     public void Hide()
     {
-        if (modalKey != null)
-        {
-            ModleLayer.Close((int)modalKey);
-        }
-
         AnimateOut();
     }
 
@@ -65,6 +60,11 @@ public class PopupsBehaviour : LShapBehaviour, ITemplatable
         CallMethod("OnAnimateOutEnd");
         OnAnimateOutEnd();
         Return();
+        if (modalKey != null)
+        {
+            ModleLayer.Close((int)modalKey);
+        }
+
     }
 
     void Return()

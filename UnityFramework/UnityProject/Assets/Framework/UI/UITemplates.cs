@@ -5,11 +5,12 @@ using System;
 public class UITemplates<T>
     where T : MonoBehaviour, ITemplatable
 {
+    bool foundTemplates = false;
+
     Dictionary<string, T> templates = new Dictionary<string, T>();
 
-    Dictionary<string, Stack<T>> cache = new Dictionary<string, Stack<T>>();
+    Dictionary<string, T> cache = new Dictionary<string, T>();
 
-    bool findTemplatesCalled;
     UnityEngine.Events.UnityAction<T> onCreateCallback;
 
     public UITemplates(UnityEngine.Events.UnityAction<T> onCreateCallback = null)
@@ -19,28 +20,39 @@ public class UITemplates<T>
 
     public void FindTemplates()
     {
-        findTemplatesCalled = true;
+        foundTemplates = true;
 
         Resources.FindObjectsOfTypeAll<T>().ForEach(x =>
         {
-            Add(x.name, x, replace: true);
+            AddTemplate(x.name, x, replace: true);
             x.gameObject.SetActive(false);
         });
     }
 
-    public void ClearAll()
+    public void Delete()
     {
         templates.Clear();
         ClearCache();
+        foundTemplates = false;
+    }
+
+    public void Delete(string name)
+    {
+        if (!ExistsTemplate(name))
+            return;
+
+        templates.Remove(name);
+        ClearCache(name);
     }
 
     public void ClearCache()
     {
-        cache.Keys.ForEach(x =>
+        foreach (var name in cache.Keys)
         {
-            ClearCache(x);
-        });
-        findTemplatesCalled = false;
+           GameObject.DestroyImmediate(cache[name]);
+        }
+        cache.Clear();
+
     }
 
     public void ClearCache(string name)
@@ -49,45 +61,24 @@ public class UITemplates<T>
         {
             return;
         }
-        cache[name].ForEach(x =>
-        {
-            UnityEngine.Object.Destroy(x.gameObject);
-        });
-        cache[name].Clear();
-        cache[name].TrimExcess();
+
+        GameObject.DestroyImmediate(cache[name]);
+        cache.Remove(name);
     }
 
-    public bool Exists(string name)
+    public bool ExistsTemplate(string name)
     {
         return templates.ContainsKey(name);
     }
 
-    public T Get(string name)
+    public void AddTemplate(string name, T template, bool replace = true)
     {
-        if (!Exists(name))
-        {
-            DebugConsole.LogError("Not found template with name '" + name + "'");
-        }
-
-        return templates[name];
-    }
-
-    public void Delete(string name)
-    {
-        if (!Exists(name))
-            return;
-
-        templates.Remove(name);
-        ClearCache(name);
-    }
-
-    public void Add(string name, T template, bool replace = true)
-    {
-        if (Exists(name))
+        if (ExistsTemplate(name))
         {
             if (!replace)
             {
                 DebugConsole.LogError("Template with name '" + name + "' already exists.");
+                return;
             }
 
             ClearCache(name);
@@ -101,22 +92,32 @@ public class UITemplates<T>
         template.TemplateName = name;
     }
 
+    public T GetTemplate(string name)
+    {
+        if (!ExistsTemplate(name))
+        {
+            DebugConsole.LogError("Not found template with name '" + name + "'");
+        }
+
+        return templates[name];
+    }
+
     public T GetDuplicate(string name)
     {
-        if (!findTemplatesCalled)
+        if (!foundTemplates)
         {
             FindTemplates();
         }
 
-        if ((!Exists(name)) || (templates[name] == null))
+        if ((!ExistsTemplate(name)) || (templates[name] == null))
         {
-            Debug.LogError("Not found template with name '" + name + "'");
+            DebugConsole.LogError("Not found template with name '" + name + "'");
         }
 
         T duplicate;
-        if ((cache.ContainsKey(name)) && (cache[name].Count > 0))
+        if ((cache.ContainsKey(name)))
         {
-            duplicate = cache[name].Pop();
+            duplicate = cache[name];
         }
         else
         {
@@ -131,12 +132,6 @@ public class UITemplates<T>
             }
         }
 
-        if (templates[name].transform.parent != null)
-        {
-           // duplicate.transform.SetParent(templates[name].transform.parent);
-        }
-
-
         return duplicate;
     }
 
@@ -146,8 +141,11 @@ public class UITemplates<T>
 
         if (!cache.ContainsKey(instance.TemplateName))
         {
-            cache[instance.TemplateName] = new Stack<T>();
+            cache.Add(instance.TemplateName, instance);
         }
-        cache[instance.TemplateName].Push(instance);
+        else
+        {
+            cache[instance.TemplateName] = instance;
+        }
     }
 }

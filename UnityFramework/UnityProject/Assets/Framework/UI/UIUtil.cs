@@ -76,7 +76,6 @@ public class UIUtil : MonoBehaviour
     /// </summary>
     public static void ClearUICache()
     {
-        DialogBox.Templates.ClearAll();
         PopupsManager.Instance.ClearCache();
         PanelStack.Instance.ClearStack();
     }

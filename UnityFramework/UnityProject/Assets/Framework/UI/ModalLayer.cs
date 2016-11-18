@@ -17,11 +17,13 @@ public class ModleLayer : MonoBehaviour, ITemplatable
             isTemplate = value;
         }
     }
+
     public string TemplateName { get; set; }
+
+    static string key = "ModalTemplate";
 
     public static UITemplates<ModleLayer> Templates = new UITemplates<ModleLayer>();
 
-    static string key = "ModalTemplate";
     static Dictionary<int, ModleLayer> usedPool = new Dictionary<int, ModleLayer>();
 
     /// <summary>
@@ -29,7 +31,7 @@ public class ModleLayer : MonoBehaviour, ITemplatable
     /// </summary>
     public static int Open(MonoBehaviour parent, Sprite sprite = null, Color? color = null)
     {
-        if (!Templates.Exists(key))
+        if (!Templates.ExistsTemplate(key))
         {
             CreateTemplate();
         }
@@ -59,7 +61,10 @@ public class ModleLayer : MonoBehaviour, ITemplatable
             img.color = (Color)color;
         }
 
-        usedPool.Add(modal.GetInstanceID(), modal);
+        if (!usedPool.ContainsKey(modal.GetInstanceID()))
+        {
+            usedPool.Add(modal.GetInstanceID(), modal);
+        }
         return modal.GetInstanceID();
     }
 
@@ -68,18 +73,40 @@ public class ModleLayer : MonoBehaviour, ITemplatable
     /// </summary>
     public static void Close(int index)
     {
-        Templates.ReturnCache(usedPool[index]);
-        usedPool.Remove(index);
+        if (usedPool.ContainsKey(index))
+        {
+            Templates.ReturnCache(usedPool[index]);
+            usedPool.Remove(index);
+        }
+        else
+        {
+            DebugConsole.Log("未找到相应Modal：" + index);
+        }
     }
 
     public static void SetRenderOrder(int index, int order)
     {
-        usedPool[index].transform.SetSiblingIndex(order);
+        if (usedPool.ContainsKey(index))
+        {
+            usedPool[index].transform.SetSiblingIndex(order);
+        }
+        else
+        {
+            DebugConsole.Log("未找到相应Modal：" + index);
+        }
     }
 
     public static int GetRenderOrder(int index)
     {
-        return usedPool[index].transform.GetSiblingIndex();
+        if (usedPool.ContainsKey(index))
+        {
+            return usedPool[index].transform.GetSiblingIndex();
+        }
+        else
+        {
+            DebugConsole.Log("未找到相应Modal：" + index);
+            return -1;
+        }
     }
 
     static void CreateTemplate()
@@ -90,6 +117,6 @@ public class ModleLayer : MonoBehaviour, ITemplatable
         rTemplate.AddComponent<Image>();
         rTemplate.transform.SetParent(Global.Templates);
 
-        Templates.Add(key, rModal);
+        Templates.AddTemplate(key, rModal);
     }
 }

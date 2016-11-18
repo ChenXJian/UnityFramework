@@ -233,7 +233,7 @@ public class DialogBox : MonoBehaviour, ITemplatable
 
     void ResetParametres()
     {
-        var template = Templates.Get(TemplateName);
+        var template = Templates.GetTemplate(TemplateName);
 
         if ((TitleText != null) && (template.TitleText != null))
         {
