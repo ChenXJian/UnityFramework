@@ -21,6 +21,7 @@ public class UIUtil : MonoBehaviour
             goCached.transform.localPosition = Vector3.zero;
             goCached.transform.localRotation = Quaternion.identity;
             goCached.AddComponent<LShapBehaviour>();
+            goCached.SetActive(false);
             if (func != null)
             {
                 Util.DelayCallForEndOfFrame(() => { func(goCached); });
@@ -41,6 +42,7 @@ public class UIUtil : MonoBehaviour
                 go.transform.localPosition = Vector3.zero;
                 go.transform.localRotation = Quaternion.identity;
                 go.AddComponent<LShapBehaviour>();
+                go.SetActive(false);
                 if (func != null)
                 {
                     Util.DelayCallForEndOfFrame(() => { func(go); });
