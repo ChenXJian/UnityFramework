@@ -31,6 +31,16 @@ namespace HotFixCode
 
         #region Must funcation
 
+        protected override void PlaceLastSibling()
+        {
+            base.PlaceLastSibling();
+        }
+
+        protected override void PlaceFirstSibling()
+        {
+            base.PlaceFirstSibling();
+        }
+
         protected override void Startup(RectTransform parent)
         {
             base.Startup(parent);

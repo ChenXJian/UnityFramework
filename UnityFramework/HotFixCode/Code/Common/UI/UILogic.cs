@@ -62,7 +62,6 @@ namespace HotFixCode
         {
             if (!gameObject) return;
             gameObject.SetActive(true);
-            transform.SetAsLastSibling();
             if (OnEnable != null)
             {
                 OnEnable(this);
@@ -89,6 +88,16 @@ namespace HotFixCode
                 PopupsManager.Instance.ClearCache();
                 GameObject.Destroy(gameObject);
             }
+        }
+
+        protected virtual void PlaceFirstSibling()
+        {
+            transform.SetAsFirstSibling();
+        }
+
+        protected virtual void PlaceLastSibling()
+        {
+            transform.SetAsLastSibling();
         }
     }
 }

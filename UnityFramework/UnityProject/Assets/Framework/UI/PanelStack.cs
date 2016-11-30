@@ -28,6 +28,11 @@ public class PanelStack : TSingleton<PanelStack>
         /// </summary>
         public bool IsCreated { set; get; }
 
+        /// <summary>
+        /// 是否是一个临时的副本
+        /// </summary>
+        public bool IsTempCopy { set; get; }
+
         public Panel()
         {
             PanelName = "Noting";
@@ -47,6 +52,8 @@ public class PanelStack : TSingleton<PanelStack>
     const string enableName = "Enable";
     const string startupName = "Startup";
     const string freeName = "Free";
+    const string placeFirstSiblingName = "PlaceFirstSibling";
+    const string placeLastSiblingName = "PlaceLastSibling";
 
     PanelStack() { }
 
@@ -122,7 +129,7 @@ public class PanelStack : TSingleton<PanelStack>
         }
     }
 
-    public Panel PushPanel(string rLogicName, UnityEngine.Events.UnityAction<object> onEnable = null)
+    public Panel PushPanel(string rLogicName, bool isTempCopy = false, UnityEngine.Events.UnityAction<object> onEnable = null)
     {
         if (panelCur != null && panelCur.LogicName != "Noting" && panelCur.PanelName != "Noting")
         {
@@ -141,12 +148,14 @@ public class PanelStack : TSingleton<PanelStack>
 
         Panel rPanel = null;
         bool rGot = TryGetPanel(rLogicName, out rPanel);
-        if (rGot)
+        if (rGot && !isTempCopy)
         {
             panelCur = rPanel;
 
-            LShapUtil.CallScriptFunction(panelCur.LogicObject, panelCur.LogicName, enableName);
             StickUpElement(panelCur);
+            LShapUtil.CallScriptFunction(panelCur.LogicObject, panelCur.LogicName, enableName);
+            LShapUtil.CallScriptFunction(panelCur.LogicObject, panelCur.LogicName, placeLastSiblingName);
+
         }
         else
         {
@@ -156,6 +165,8 @@ public class PanelStack : TSingleton<PanelStack>
             rNewPanel.IsCreated = false;
             rNewPanel.LogicName = rLogicName;
             rNewPanel.PanelName = rPanelName;
+            rNewPanel.IsTempCopy = isTempCopy;
+
             rNewPanel.LogicObject = LShapUtil.CreateScriptObject(rLogicName);
             _panelStack.Push(rNewPanel);
 
@@ -179,14 +190,30 @@ public class PanelStack : TSingleton<PanelStack>
             throw new UnassignedReferenceException("_panelStack don't can Pop Panel");
         }
 
-        var panel = _panelStack.Pop();
-        LShapUtil.CallScriptFunction(panel.LogicObject, panel.LogicName, disableName);
-        panelCur = _panelStack.Pop();
-        LShapUtil.CallScriptFunction(panelCur.LogicObject, panelCur.LogicName, enableName);
 
-        _panelStack.Push(panel);
-        _panelStack.Push(panelCur);
-        StickDownElement(panel);
+        var panel = _panelStack.Pop();
+        if (panel.IsTempCopy)
+        {
+            LShapUtil.CallScriptFunction(panel.LogicObject, panel.LogicName, freeName);
+            panelCur = _panelStack.Peek();
+            LShapUtil.CallScriptFunction(panelCur.LogicObject, panelCur.LogicName, enableName);
+            LShapUtil.CallScriptFunction(panelCur.LogicObject, panelCur.LogicName, placeLastSiblingName);
+        }
+        else
+        {
+            LShapUtil.CallScriptFunction(panel.LogicObject, panel.LogicName, disableName);
+            panelCur = _panelStack.Pop();
+            LShapUtil.CallScriptFunction(panelCur.LogicObject, panelCur.LogicName, enableName);
+            LShapUtil.CallScriptFunction(panelCur.LogicObject, panelCur.LogicName, placeLastSiblingName);
+
+            _panelStack.Push(panel);
+            _panelStack.Push(panelCur);
+
+            StickDownElement(panel);
+
+            LShapUtil.CallScriptFunction(panel.LogicObject, panel.LogicName, placeFirstSiblingName);
+        }
+
         return panel;
     }
 
