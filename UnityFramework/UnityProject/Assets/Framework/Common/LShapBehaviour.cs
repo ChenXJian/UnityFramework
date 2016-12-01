@@ -21,6 +21,7 @@ public class LShapBehaviour : MonoBehaviour
     const string fixedUpdateName = "FixedUpdate";
     const string onDestroyName = "OnDestroy";
 
+    //3D碰撞
     const string onTriggerEnterName = "OnTriggerEnter";
     const string onTriggerExitName = "OnTriggerExit";
     const string onTriggerStayName = "OnTriggerStay";
@@ -37,6 +38,24 @@ public class LShapBehaviour : MonoBehaviour
     CLRSharp.IMethod onCollisionEnter = null;
     CLRSharp.IMethod onCollisionExit = null;
     CLRSharp.IMethod onCollisionStay = null;
+
+    //2D碰撞
+    const string onTriggerEnter2DName = "OnTriggerEnter2D";
+    const string onTriggerExit2DName = "OnTriggerExit2D";
+    const string onTriggerStay2DName = "OnTriggerStay2D";
+
+    const string onCollisionEnter2DName = "OnCollisionEnter2D";
+    const string onCollisionExit2DName = "OnCollisionExit2D";
+    const string onCollisionStay2DName = "OnCollisionStay2D";
+
+
+    CLRSharp.IMethod onTriggerEnter2D = null;
+    CLRSharp.IMethod onTriggerExit2D = null;
+    CLRSharp.IMethod onTriggerStay2D = null;
+
+    CLRSharp.IMethod onCollisionEnter2D = null;
+    CLRSharp.IMethod onCollisionExit2D = null;
+    CLRSharp.IMethod onCollisionStay2D = null;
 
     CLRSharp.IMethod update = null;
     CLRSharp.IMethod lateUpdate = null;
@@ -83,6 +102,14 @@ public class LShapBehaviour : MonoBehaviour
             LShapClient.Instance.TryGetMethod(rType, onCollisionEnterName, out onCollisionEnter, new Collision());
             LShapClient.Instance.TryGetMethod(rType, onCollisionExitName, out onCollisionExit, new Collision());
             LShapClient.Instance.TryGetMethod(rType, onCollisionStayName, out onCollisionStay, new Collision());
+
+
+            LShapClient.Instance.TryGetMethod(rType, onTriggerEnter2DName, out onTriggerEnter2D, new Collider2D());
+            LShapClient.Instance.TryGetMethod(rType, onTriggerExit2DName, out onTriggerExit2D, new Collider2D());
+            LShapClient.Instance.TryGetMethod(rType, onTriggerStay2DName, out onTriggerStay2D, new Collider2D());
+            LShapClient.Instance.TryGetMethod(rType, onCollisionEnter2DName, out onCollisionEnter2D, new Collision2D());
+            LShapClient.Instance.TryGetMethod(rType, onCollisionExit2DName, out onCollisionExit2D, new Collision2D());
+            LShapClient.Instance.TryGetMethod(rType, onCollisionStay2DName, out onCollisionStay2D, new Collision2D());
 
 
             if (isNeedAwake)
@@ -151,6 +178,37 @@ public class LShapBehaviour : MonoBehaviour
     protected virtual void OnCollisionStay(Collision collision)
     {
         if (onCollisionStay != null) onCollisionStay.Invoke(LShapClient.context, lShapObject, new object[] { collision });
+    }
+
+
+    protected virtual void OnTriggerEnter2D(Collider2D collider)
+    {
+        if (onTriggerEnter2D != null) onTriggerEnter2D.Invoke(LShapClient.context, lShapObject, new object[] { collider });
+    }
+
+    protected virtual void OnTriggerExit2D(Collider2D collider)
+    {
+        if (onTriggerExit2D != null) onTriggerExit2D.Invoke(LShapClient.context, lShapObject, new object[] { collider });
+    }
+
+    protected virtual void OnTriggerStay2D(Collider2D collider)
+    {
+        if (onTriggerStay2D != null) onTriggerStay2D.Invoke(LShapClient.context, lShapObject, new object[] { collider });
+    }
+
+    protected virtual void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (onCollisionEnter2D != null) onCollisionEnter2D.Invoke(LShapClient.context, lShapObject, new object[] { collision });
+    }
+
+    protected virtual void OnCollisionExit2D(Collision2D collision)
+    {
+        if (onCollisionExit2D != null) onCollisionExit2D.Invoke(LShapClient.context, lShapObject, new object[] { collision });
+    }
+
+    protected virtual void OnCollisionStay2D(Collision2D collision)
+    {
+        if (onCollisionStay2D != null) onCollisionStay2D.Invoke(LShapClient.context, lShapObject, new object[] { collision });
     }
 
 
