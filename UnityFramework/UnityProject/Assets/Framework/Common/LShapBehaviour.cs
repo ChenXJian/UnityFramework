@@ -12,6 +12,8 @@ public class LShapBehaviour : MonoBehaviour
     bool isNeedStart = false;
     bool isNeedOnDestroy = false;
 
+
+
     const string awakeName = "Awake";
     const string startName = "Start";
     const string updateName = "Update";
@@ -27,6 +29,7 @@ public class LShapBehaviour : MonoBehaviour
     const string onCollisionExitName = "OnCollisionExit";
     const string onCollisionStayName = "OnCollisionStay";
 
+
     CLRSharp.IMethod onTriggerEnter = null;
     CLRSharp.IMethod onTriggerExit = null;
     CLRSharp.IMethod onTriggerStay = null;
@@ -39,6 +42,7 @@ public class LShapBehaviour : MonoBehaviour
     CLRSharp.IMethod lateUpdate = null;
     CLRSharp.IMethod fixedUpdate = null;
 
+
     protected virtual void Awake()
     {
         if (!LShapClient.Instance.IsScriptInited)
@@ -47,8 +51,15 @@ public class LShapBehaviour : MonoBehaviour
         }
 
         CLRSharp.ICLRType rType = null;
-        var rName = name.Replace("(Clone)", "");
-        bool rGot = LShapClient.Instance.TryGetType(rName, out rType);
+
+        string typeName = name;
+        var i = name.IndexOf(" ", 0);
+        if (i >= 0) typeName = name.Remove(i);
+
+        i = typeName.IndexOf("(", 0);
+        if (i >= 0) typeName = name.Remove(i);
+
+        bool rGot = LShapClient.Instance.TryGetType(typeName, out rType);
 
         if(rGot)
         {
