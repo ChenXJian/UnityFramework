@@ -4,7 +4,7 @@ using System.Collections;
 public class LShapClient : TSingleton<LShapClient> 
 {
     static CLRSharp.CLRSharp_Environment env;
-    static CLRSharp.ThreadContext context;
+    public static CLRSharp.ThreadContext context;
 
     public bool IsScriptInited { set; get; }
 

@@ -8,20 +8,44 @@ public class LShapBehaviour : MonoBehaviour
 {
     object lShapObject;
 
+    bool isNeedAwake = false;
     bool isNeedStart = false;
-    bool isNeedUpdate = false;
-    bool isNeedLateUpdate = false;
-    bool isNeedFixedUpdate = false;
     bool isNeedOnDestroy = false;
 
+    const string awakeName = "Awake";
     const string startName = "Start";
     const string updateName = "Update";
     const string lateUpdateName = "LateUpdate";
     const string fixedUpdateName = "FixedUpdate";
     const string onDestroyName = "OnDestroy";
 
+    const string onTriggerEnterName = "OnTriggerEnter";
+    const string onTriggerExitName = "OnTriggerExit";
+    const string onTriggerStayName = "OnTriggerStay";
+
+    const string onCollisionEnterName = "OnCollisionEnter";
+    const string onCollisionExitName = "OnCollisionExit";
+    const string onCollisionStayName = "OnCollisionStay";
+
+    CLRSharp.IMethod onTriggerEnter = null;
+    CLRSharp.IMethod onTriggerExit = null;
+    CLRSharp.IMethod onTriggerStay = null;
+
+    CLRSharp.IMethod onCollisionEnter = null;
+    CLRSharp.IMethod onCollisionExit = null;
+    CLRSharp.IMethod onCollisionStay = null;
+
+    CLRSharp.IMethod update = null;
+    CLRSharp.IMethod lateUpdate = null;
+    CLRSharp.IMethod fixedUpdate = null;
+
     protected virtual void Awake()
     {
+        if (!LShapClient.Instance.IsScriptInited)
+        {
+            LShapClient.Instance.Initialize();
+        }
+
         CLRSharp.ICLRType rType = null;
         var rName = name.Replace("(Clone)", "");
         bool rGot = LShapClient.Instance.TryGetType(rName, out rType);
@@ -32,12 +56,28 @@ public class LShapBehaviour : MonoBehaviour
             {
                 SetLShapObject(LShapClient.Instance.CreateScriptObject(rType));
             }
+
+            isNeedAwake = LShapClient.Instance.CheckExistMethod(rType, awakeName, gameObject);
             isNeedStart = LShapClient.Instance.CheckExistMethod(rType, startName);
-            isNeedUpdate = LShapClient.Instance.CheckExistMethod(rType, updateName);
-            isNeedLateUpdate = LShapClient.Instance.CheckExistMethod(rType, lateUpdateName);
-            isNeedFixedUpdate = LShapClient.Instance.CheckExistMethod(rType, fixedUpdateName);
             isNeedOnDestroy = LShapClient.Instance.CheckExistMethod(rType, onDestroyName);
-            CallMethod("Awake", gameObject);
+
+
+            LShapClient.Instance.TryGetMethod(rType, updateName, out update);
+            LShapClient.Instance.TryGetMethod(rType, lateUpdateName, out lateUpdate);
+            LShapClient.Instance.TryGetMethod(rType, fixedUpdateName, out fixedUpdate);
+
+            LShapClient.Instance.TryGetMethod(rType, onTriggerEnterName, out onTriggerEnter, new Collider());
+            LShapClient.Instance.TryGetMethod(rType, onTriggerExitName, out onTriggerExit, new Collider());
+            LShapClient.Instance.TryGetMethod(rType, onTriggerStayName, out onTriggerStay, new Collider());
+            LShapClient.Instance.TryGetMethod(rType, onCollisionEnterName, out onCollisionEnter, new Collision());
+            LShapClient.Instance.TryGetMethod(rType, onCollisionExitName, out onCollisionExit, new Collision());
+            LShapClient.Instance.TryGetMethod(rType, onCollisionStayName, out onCollisionStay, new Collision());
+
+
+            if (isNeedAwake)
+            {
+                CallMethod("Awake", gameObject);
+            }
         }
         else
         {
@@ -47,25 +87,8 @@ public class LShapBehaviour : MonoBehaviour
 
     protected virtual void Start()
     {
-        if (isNeedStart) CallMethod("Start");
+        if (isNeedStart) CallMethod(startName);
     }
-
-    protected virtual void Update()
-    {
-        if (isNeedUpdate) CallMethod("Update");
-
-    }
-
-    protected virtual void LateUpdate()
-    {
-        if (isNeedLateUpdate) CallMethod("LateUpdate");
-    }
-
-    protected virtual void FixedUpdate()
-    {
-        if (isNeedFixedUpdate) CallMethod("FixedUpdate");
-    }
-
 
     protected virtual void OnDestroy()
     {
@@ -73,6 +96,52 @@ public class LShapBehaviour : MonoBehaviour
         lShapObject = null;
         if(name.Contains("Panel")) Global.AssetLoadManager.UnloadUIPanel(name);
     }
+
+    protected virtual void Update()
+    {
+        if (update != null) update.Invoke(LShapClient.context, lShapObject, null);
+    }
+
+    protected virtual void LateUpdate()
+    {
+        if (lateUpdate != null) lateUpdate.Invoke(LShapClient.context, lShapObject, null);
+    }
+
+    protected virtual void FixedUpdate()
+    {
+        if (fixedUpdate != null) fixedUpdate.Invoke(LShapClient.context, lShapObject, null);
+    }
+
+    protected virtual void OnTriggerEnter(Collider collider)
+    {
+        if (onTriggerEnter!= null) onTriggerEnter.Invoke(LShapClient.context, lShapObject, new object[] { collider });
+    }
+
+    protected virtual void OnTriggerExit(Collider collider)
+    {
+        if (onTriggerExit != null) onTriggerExit.Invoke(LShapClient.context, lShapObject, new object[] { collider });
+    }
+
+    protected virtual void OnTriggerStay(Collider collider)
+    {
+        if (onTriggerStay != null) onTriggerStay.Invoke(LShapClient.context, lShapObject, new object[] { collider });
+    }
+
+    protected virtual void OnCollisionEnter(Collision collision)
+    {
+        if (onCollisionEnter != null) onCollisionEnter.Invoke(LShapClient.context, lShapObject, new object[] { collision });
+    }
+
+    protected virtual void OnCollisionExit(Collision collision)
+    {
+        if (onCollisionExit != null) onCollisionExit.Invoke(LShapClient.context, lShapObject, new object[] { collision });
+    }
+
+    protected virtual void OnCollisionStay(Collision collision)
+    {
+        if (onCollisionStay != null) onCollisionStay.Invoke(LShapClient.context, lShapObject, new object[] { collision });
+    }
+
 
     public object GetLShapObject()
     {
