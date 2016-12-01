@@ -46,6 +46,7 @@ public class PanelStack : TSingleton<PanelStack>
     Stack<Panel> _panelStack = new Stack<Panel>();
     Dictionary<string, GameObject> _panelCache = new Dictionary<string, GameObject>();
     Panel panelCur = new Panel();
+    Panel panelPrev = new Panel();
     Transform rootNode;
 
     const string disableName = "Disable";
@@ -70,6 +71,11 @@ public class PanelStack : TSingleton<PanelStack>
     public Panel PanelCurrent
     {
         get { return panelCur; }
+    }
+
+    public Panel PanelPrevious
+    {
+        get { return panelPrev; }
     }
 
     public bool TryGetPanel(string rLogicName, out Panel rPanel)
@@ -138,13 +144,9 @@ public class PanelStack : TSingleton<PanelStack>
                 Debug.Log(rLogicName + " is repeat");
                 return panelCur;
             }
-
-            if (panelCur.LogicObject != null)
-            {
-                LShapUtil.CallScriptFunction(panelCur.LogicObject, panelCur.LogicName, disableName);
-            }
         }
 
+        panelPrev = panelCur;
 
         Panel rPanel = null;
         bool rGot = TryGetPanel(rLogicName, out rPanel);
@@ -183,6 +185,14 @@ public class PanelStack : TSingleton<PanelStack>
         return panelCur;
     }
 
+    public void HidePanelPrevious()
+    {
+        if (panelPrev != null && panelPrev.LogicObject != null)
+        {
+            LShapUtil.CallScriptFunction(panelPrev.LogicObject, panelPrev.LogicName, disableName);
+        }
+    }
+
     public Panel PopPanel()
     {
         if (_panelStack.Count < 2)
@@ -190,6 +200,7 @@ public class PanelStack : TSingleton<PanelStack>
             throw new UnassignedReferenceException("_panelStack don't can Pop Panel");
         }
 
+        panelPrev = null;
 
         var panel = _panelStack.Pop();
         if (panel.IsTempCopy)

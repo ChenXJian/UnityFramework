@@ -62,6 +62,8 @@ namespace HotFixCode
         {
             if (!gameObject) return;
             gameObject.SetActive(true);
+            PlaceLastSibling();
+            PanelStack.Instance.HidePanelPrevious();
             if (OnEnable != null)
             {
                 OnEnable(this);
