@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace HotFixCode
 {
-    public class UIPopups : UIPanel
+    public class UIPopups : BehaviourBase
     {
         public UIPopups(PopupsBehaviour rBasePopups)
         {

@@ -51,7 +51,7 @@
     <Compile Include="Code\Common\UI\UILogic.cs" />
     <Compile Include="Code\Common\GameInstance.cs" />
     <Compile Include="Code\Common\UI\UIPopups.cs" />
-    <Compile Include="Code\Common\UI\UIPanel.cs" />
+    <Compile Include="Code\Common\BehaviourBase.cs" />
     <Compile Include="Code\Sample\SampleCollision.cs" />
     <Compile Include="Code\Sample\SampleTwoLogic.cs" />
     <Compile Include="Code\Sample\SampleTwoPanel.cs" />

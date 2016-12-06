@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace HotFixCode
 {
-    public class SamplePanel : UIPanel
+    public class SamplePanel : BehaviourBase
     {
         public SampleLogic logic;
         public Button buttonDialog;
