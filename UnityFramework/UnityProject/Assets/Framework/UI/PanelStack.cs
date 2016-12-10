@@ -269,15 +269,19 @@ public class PanelStack : TSingleton<PanelStack>
         _panelStack.Clear();
         _panelStack.TrimExcess();
 
-        for(int i = 0; i < temp.Count; i++)
+        var num = temp.Count;
+
+        for (int i = num - 1; i >= 0; i--)
         {
-            if (temp[i].LogicName == panelCur.LogicName) 
+
+            if (temp[i].LogicName == panelCur.LogicName)
             {
                 continue;
             }
             else
             {
                 LShapUtil.CallScriptFunction(temp[i].LogicObject, temp[i].LogicName, freeName);
+
                 temp.RemoveAt(i);
             }
         }
