@@ -126,8 +126,8 @@ public class ModleLayer : MonoBehaviour, ITemplatable
 
         var rModal = rTemplate.AddComponent<ModleLayer>();
         rTemplate.AddComponent<Image>();
-        rTemplate.transform.SetParent(Global.Templates);
-
+        var temp = Util.Child(Global.MessageCanvas, "Templates");
+        rTemplate.transform.SetParent(temp.transform);
         Templates.AddTemplate(key, rModal);
     }
 }

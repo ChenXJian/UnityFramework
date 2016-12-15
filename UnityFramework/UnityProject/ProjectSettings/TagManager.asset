@@ -10,9 +10,10 @@ TagManager:
   - PopupsWindow
   - PanelCamera
   - EffectCamera
-  - Templates
   - GameController
   - WorldCanvas
+  - UIRoot
+  - Templates
   layers:
   - Default
   - TransparentFX

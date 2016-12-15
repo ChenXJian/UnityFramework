@@ -196,18 +196,4 @@ public static class Global
             return rGo.transform;
         }
     }
-
-    public static Transform Templates
-    {
-        get
-        {
-            GameObject rGo = GameObject.FindWithTag("Templates");
-            if (rGo == null)
-            {
-                throw new NullReferenceException("Not find Templates");
-            }
-
-            return rGo.transform;
-        }
-    }
 }
