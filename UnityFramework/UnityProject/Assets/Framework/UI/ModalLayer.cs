@@ -26,6 +26,8 @@ public class ModleLayer : MonoBehaviour, ITemplatable
 
     static Dictionary<int, ModleLayer> usedPool = new Dictionary<int, ModleLayer>();
 
+    private int _ReferencedCount = 0;
+
     /// <summary>
     /// 打开一个模态层
     /// </summary>
@@ -65,6 +67,7 @@ public class ModleLayer : MonoBehaviour, ITemplatable
         {
             usedPool.Add(modal.GetInstanceID(), modal);
         }
+        modal._ReferencedCount++;
         return modal.GetInstanceID();
     }
 
@@ -75,8 +78,16 @@ public class ModleLayer : MonoBehaviour, ITemplatable
     {
         if (usedPool.ContainsKey(index))
         {
-            Templates.ReturnCache(usedPool[index]);
-            usedPool.Remove(index);
+            if (usedPool[index]._ReferencedCount > 1)
+            {
+                usedPool[index]._ReferencedCount--;
+            }
+            else
+            {
+                usedPool[index]._ReferencedCount = 0;
+                Templates.ReturnCache(usedPool[index]);
+                usedPool.Remove(index);
+            }
         }
         else
         {
