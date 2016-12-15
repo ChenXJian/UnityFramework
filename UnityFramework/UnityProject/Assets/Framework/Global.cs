@@ -127,7 +127,15 @@ public static class Global
     {
         get
         {
-            return Global.MainTick.GetComponent<GameController>();
+            GameObject rGo = GameObject.FindWithTag("GameController");
+            if (rGo != null)
+            {
+                return rGo.GetComponent<GameController>();
+            }
+            else
+            {
+                throw new NullReferenceException("Not find GameController");
+            }
         }
     }
 
@@ -155,20 +163,6 @@ public static class Global
             if (rGo == null)
             {
                 throw new NullReferenceException("Not find PanelWindow");
-            }
-
-            return rGo.transform;
-        }
-    }
-
-    public static Transform EffectCamera
-    {
-        get
-        {
-            GameObject rGo = GameObject.FindWithTag("EffectCamera");
-            if (rGo == null)
-            {
-                throw new NullReferenceException("Not find EffectCamera");
             }
 
             return rGo.transform;
@@ -211,20 +205,6 @@ public static class Global
             if (rGo == null)
             {
                 throw new NullReferenceException("Not find Templates");
-            }
-
-            return rGo.transform;
-        }
-    }
-
-    public static Transform MainTick
-    {
-        get
-        {
-            GameObject rGo = GameObject.FindWithTag("MainTick");
-            if (rGo == null)
-            {
-                throw new NullReferenceException("Not find MainTick");
             }
 
             return rGo.transform;

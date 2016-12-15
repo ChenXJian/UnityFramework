@@ -20,7 +20,7 @@ public class ManagerCollect : TSingleton<ManagerCollect>
         {
             return (T)result;
         }
-        Component c = Global.MainTick.gameObject.AddComponent<T>();
+        Component c = Global.GameController.gameObject.AddComponent<T>();
         m_Managers.Add(typeName, c);
         return default(T);
     }

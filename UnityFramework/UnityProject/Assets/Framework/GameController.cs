@@ -16,7 +16,7 @@ public class GameController : MonoBehaviour
         {
             if(null == _instance)
             {
-                string rName = "MainTick";
+                string rName = "GameController";
                 GameObject main = GameObject.Find(rName);
                 if (main == null)
                 {
@@ -25,6 +25,7 @@ public class GameController : MonoBehaviour
                     main.tag = rName;
                 }
                 _instance = main.GetComponentSafe<GameController>();
+                DontDestroyOnLoad(main);
             }
 
             return _instance;
@@ -42,7 +43,6 @@ public class GameController : MonoBehaviour
         }
 
         //取消 Destroy 对象 
-        DontDestroyOnLoad(gameObject);
 
         InitConsole();
         InitUIRoot();
@@ -74,14 +74,7 @@ public class GameController : MonoBehaviour
 
     void InitConsole()
     {
-        string rName = "DebugConsloe";
-        GameObject consloe = GameObject.Find(rName);
-        if (consloe == null)
-        {
-            consloe = new GameObject(rName);
-            consloe.name = rName;
-        }
-        var com = consloe.GetComponentSafe<DebugConsole>();
+        var com = gameObject.GetComponentSafe<DebugConsole>();
         com.IsDebugMode = true;
         com.isOpenBriefView = true;
     }
@@ -98,7 +91,6 @@ public class GameController : MonoBehaviour
             root = GameObject.Instantiate(temp);
         }
         root.transform.Reset();
-        DontDestroyOnLoad(root);
     }
 
     void InitResolution()

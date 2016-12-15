@@ -11,7 +11,7 @@ TagManager:
   - PanelCamera
   - EffectCamera
   - Templates
-  - MainTick
+  - GameController
   - WorldCanvas
   layers:
   - Default
