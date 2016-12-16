@@ -24,9 +24,11 @@ public class ModleLayer : MonoBehaviour, ITemplatable
 
     public static UITemplates<ModleLayer> Templates = new UITemplates<ModleLayer>();
 
-    static Dictionary<int, ModleLayer> usedPool = new Dictionary<int, ModleLayer>();
+    static int _ReferencedCount = 0;
 
-    private int _ReferencedCount = 0;
+    static Dictionary<int, Transform> ReferencedNodes = new Dictionary<int, Transform>();
+
+    static ModleLayer modal;
 
     /// <summary>
     /// 打开一个模态层
@@ -38,7 +40,7 @@ public class ModleLayer : MonoBehaviour, ITemplatable
             CreateTemplate();
         }
 
-        var modal = Templates.GetDuplicate(key);
+        modal = Templates.GetDuplicate(key);
         
         modal.transform.SetParent(parent.transform.parent, false);
         modal.gameObject.SetActive(true);
@@ -63,12 +65,15 @@ public class ModleLayer : MonoBehaviour, ITemplatable
             img.color = (Color)color;
         }
 
-        if (!usedPool.ContainsKey(modal.GetInstanceID()))
+
+        _ReferencedCount++;
+
+
+        if (!ReferencedNodes.ContainsKey(parent.gameObject.GetInstanceID()))
         {
-            usedPool.Add(modal.GetInstanceID(), modal);
+            ReferencedNodes.Add(parent.gameObject.GetInstanceID(), parent.transform);
         }
-        modal._ReferencedCount++;
-        return modal.GetInstanceID();
+        return parent.gameObject.GetInstanceID();
     }
 
     /// <summary>
@@ -76,48 +81,40 @@ public class ModleLayer : MonoBehaviour, ITemplatable
     /// </summary>
     public static void Close(int index)
     {
-        if (usedPool.ContainsKey(index))
+        ReferencedNodes.Remove(index);
+        if (_ReferencedCount > 1)
         {
-            if (usedPool[index]._ReferencedCount > 1)
-            {
-                usedPool[index]._ReferencedCount--;
-            }
-            else
-            {
-                usedPool[index]._ReferencedCount = 0;
-                Templates.ReturnCache(usedPool[index]);
-                usedPool.Remove(index);
+            _ReferencedCount--;
+            var count = ReferencedNodes.Count;
+
+            var enumerator = ReferencedNodes.Values.GetEnumerator();
+            while (count > 0)
+            { 
+
+                count--;
+                enumerator.MoveNext();
+                if (count == 0)
+                {
+                    modal.transform.SetParent(enumerator.Current.parent);
+                    modal.transform.SetSiblingIndex(enumerator.Current.GetSiblingIndex() - 1);
+                }
             }
         }
         else
         {
-            DebugConsole.Log("未找到相应Modal：" + index);
+            _ReferencedCount = 0;
+            Templates.ReturnCache(modal);
         }
     }
 
     public static void SetRenderOrder(int index, int order)
     {
-        if (usedPool.ContainsKey(index))
-        {
-            usedPool[index].transform.SetSiblingIndex(order);
-        }
-        else
-        {
-            DebugConsole.Log("未找到相应Modal：" + index);
-        }
+        modal.transform.SetSiblingIndex(order);
     }
 
     public static int GetRenderOrder(int index)
     {
-        if (usedPool.ContainsKey(index))
-        {
-            return usedPool[index].transform.GetSiblingIndex();
-        }
-        else
-        {
-            DebugConsole.Log("未找到相应Modal：" + index);
-            return -1;
-        }
+        return modal.transform.GetSiblingIndex();
     }
 
     static void CreateTemplate()
