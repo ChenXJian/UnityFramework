@@ -1,5 +1,6 @@
 # UnityFramework
 
+### （此项目，在实际商业项目中，进行了大量重构，热更新部分也将L#完全替换为了ILRuntime, 性能提升巨大，推荐使用ILRuntime， 但这里由于创业缘故，已没有时间继续维护了）
 
 ## 简述
 UnityFramework是基于Unity3D 5.4版本 + L#实现的一套热更新架构
